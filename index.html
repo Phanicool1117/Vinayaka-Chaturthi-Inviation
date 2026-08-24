@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1c0e0a" />
+    <meta name="description" content="Vinayaka Chaturthi Invitation — Penumuli Perantalamma Youth. September 14th." />
+    <title>Vinayaka Chaturthi Invitation · Penumuli Perantalamma Youth</title>
+    <link rel="preload" as="image" href="assets/frame-01-temple-exterior.jpeg" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/frame-03-doors-closed.jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Outfit:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/experience.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#approach">Skip to invitation</a>
+
+    <div class="loader" id="loader">
+      <img src="assets/frame-01-temple-exterior.jpeg" alt="" />
+    </div>
+
+    <div class="device-gate" id="deviceGate" hidden>
+      <div class="device-gate-card">
+        <p class="device-gate-kicker">Vinayaka Chaturthi Invitation</p>
+        <h1>Please open this on a phone</h1>
+        <p>This invitation is built only for mobile. It does not run on desktop, laptop, or tablet screens.</p>
+      </div>
+    </div>
+
+    <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" aria-label="Play music">
+      <span class="music-glyph" aria-hidden="true">♪</span>
+      <span class="music-label">Play music</span>
+    </button>
+
+    <main>
+      <section class="chapter" id="approach" aria-label="Approach the temple">
+        <div class="frame" id="approachFrame">
+          <img class="shot is-wide" src="assets/frame-01-temple-exterior.jpeg" alt="Temple exterior at sunset." fetchpriority="high" />
+          <img class="shot is-entrance" src="assets/frame-02-temple-entrance.jpeg" alt="" />
+        </div>
+      </section>
+
+      <section class="chapter" id="doors" aria-label="Temple doors">
+        <div class="frame door-stage">
+          <img class="shot door-beyond" src="assets/frame-05-blue-temple-title.jpeg" alt="" />
+          <div class="door-pair" id="doorPair">
+            <button class="door-leaf door-left" id="doorLeft" type="button" aria-label="Open the temple door">
+              <span class="door-face"><img src="assets/frame-03-doors-closed.jpeg" alt="" /></span>
+            </button>
+            <button class="door-leaf door-right" id="doorRight" type="button" aria-label="Open the temple door">
+              <span class="door-face"><img src="assets/frame-03-doors-closed.jpeg" alt="" /></span>
+            </button>
+          </div>
+          <p class="door-hint" id="doorHint">Tap the doors to enter</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="invitation" aria-label="Invitation booklet">
+        <div class="frame booklet">
+          <div class="booklet-page" id="bookletPage">
+            <div class="page-face">
+              <img src="assets/frame-06-english-invitation.jpeg" alt="English Vinayaka Chaturthi invitation." />
+            </div>
+            <div class="page-face page-back">
+              <img src="assets/frame-07-telugu-invitation.jpeg" alt="Telugu Vinayaka Chaturthi invitation." />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="story" aria-label="More than a celebration">
+        <div class="frame">
+          <img class="shot" src="assets/frame-08-more-than-celebration.jpeg" alt="More Than a Celebration." />
+        </div>
+      </section>
+
+      <section class="chapter" id="countdown" aria-label="Counting the days">
+        <div class="frame poster" id="countPoster">
+          <div class="poster-fit">
+            <img class="shot" src="assets/frame-09-counting-days.jpeg" alt="Counting the Days." />
+            <div class="live-timer" id="timer" aria-live="polite">
+              <div class="unit">
+                <span data-unit="days">00</span>
+                <small>Days</small>
+              </div>
+              <i aria-hidden="true">+</i>
+              <div class="unit">
+                <span data-unit="hours">00</span>
+                <small>Hours</small>
+              </div>
+              <i aria-hidden="true">+</i>
+              <div class="unit">
+                <span data-unit="minutes">00</span>
+                <small>Minutes</small>
+              </div>
+              <i aria-hidden="true">+</i>
+              <div class="unit">
+                <span data-unit="seconds">00</span>
+                <small>Seconds</small>
+              </div>
+            </div>
+            <button class="magic-hot" id="magicBtn" type="button" aria-label="Touch here for magic"></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="blessing" aria-label="Divine blessing">
+        <div class="frame bless-stage">
+          <img class="shot bless is-logo" src="assets/frame-10-logo-reveal.jpeg" alt="Penumuli Perantalamma Youth emblem." />
+          <img class="shot bless is-glow" src="assets/frame-11-illuminated-ganapati.jpeg" alt="" />
+          <img class="shot bless is-gold" src="assets/frame-12-divine-golden.jpeg" alt="" />
+          <img class="shot bless is-rays" src="assets/frame-13-golden-rays.jpeg" alt="" />
+        </div>
+      </section>
+
+      <section class="chapter" id="donation" aria-label="Donation">
+        <div class="frame poster">
+          <img class="shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
+          <button class="exit-btn" id="exitBtn" type="button">Exit</button>
+        </div>
+      </section>
+    </main>
+
+    <audio id="bgm" src="audio/devotional-music.mp3" loop preload="none"></audio>
+    <audio id="bell" src="audio/temple-bell.mp3" preload="auto"></audio>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="vendor/lenis.min.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/experience.js"></script>
+  </body>
+</html>
