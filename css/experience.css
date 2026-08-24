@@ -19,6 +19,7 @@
 html,
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--wood-deep);
   color: var(--ivory);
   font-family: var(--sans);
@@ -124,56 +125,62 @@ button {
   background: #4a1420;
 }
 
-#donation .frame {
-  background: #f3e6d0;
+#donation .frame,
+.donation-stage {
+  display: block;
+  background: #efe4cf;
 }
 
-.device-gate {
+#donation .shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.phone-preview-wrap {
   display: none;
 }
 
-.device-gate-card {
-  max-width: 28rem;
-  padding: 2rem 1.4rem;
-  text-align: center;
-}
-
-.device-gate-kicker {
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 0.68rem;
-  color: var(--gold);
-}
-
-.device-gate h1 {
-  margin: 0.6rem 0 0.8rem;
-  font-family: var(--display);
-  font-size: 2rem;
-  line-height: 1.15;
-}
-
-.device-gate p {
-  margin: 0;
-  line-height: 1.5;
-  color: #eadcc4;
-}
-
 @media (min-width: 768px) {
-  .device-gate,
-  .device-gate[hidden] {
-    position: fixed;
-    inset: 0;
-    z-index: 300;
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-    background: radial-gradient(circle at 50% 20%, #5a2a1c, #140806 70%);
+  body.is-desktop-preview {
+    min-height: 100dvh;
+    background: radial-gradient(circle at 50% 12%, #4a2218, #0c0605 62%);
   }
 
-  body.is-desktop main,
-  body.is-desktop .music-toggle,
-  body.is-desktop .loader {
+  body.is-desktop-preview main,
+  body.is-desktop-preview .music-toggle,
+  body.is-desktop-preview .loader,
+  body.is-desktop-preview .skip-link {
     display: none;
+  }
+
+  body.is-desktop-preview .phone-preview-wrap,
+  body.is-desktop-preview .phone-preview-wrap[hidden] {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: 1.25rem;
+    gap: 0.85rem;
+  }
+
+  .phone-preview-note {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .phone-preview {
+    width: min(390px, 100vw - 2rem);
+    height: min(844px, 100dvh - 4.5rem);
+    border: 10px solid #1a0c08;
+    border-radius: 28px;
+    background: #000;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
   }
 }
 
@@ -195,30 +202,36 @@ button {
 }
 
 .door-stage {
-  perspective: 1800px;
+  perspective: 1600px;
+  perspective-origin: 50% 45%;
+  overflow: hidden;
 }
 
 .door-beyond {
-  filter: brightness(0.5);
+  z-index: 1;
+  filter: brightness(0.42);
 }
 
 .door-pair {
   position: absolute;
   inset: 0;
   z-index: 2;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   transform-style: preserve-3d;
 }
 
 .door-leaf {
-  width: 50%;
+  min-width: 0;
   height: 100%;
   padding: 0;
   border: 0;
+  overflow: hidden;
   background: none;
   cursor: pointer;
   transform-style: preserve-3d;
-  transition: transform 1.55s var(--door);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .door-left {
@@ -229,37 +242,36 @@ button {
   transform-origin: right center;
 }
 
-.door-face,
-.door-face img {
+.door-face {
+  position: relative;
+  display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.door-left .door-face img {
+.door-face img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
   width: 200%;
+  height: 100%;
+  max-width: none;
   object-fit: cover;
-  object-position: left center;
+  object-position: center center;
 }
 
 .door-right .door-face img {
-  width: 200%;
-  margin-left: -100%;
-  object-fit: cover;
-  object-position: right center;
+  left: -100%;
 }
 
-.is-open .door-left {
-  transform: rotateY(-105deg);
-}
-
-.is-open .door-right {
-  transform: rotateY(105deg);
+.is-open .door-leaf {
+  pointer-events: none;
 }
 
 .is-open .door-beyond {
   filter: brightness(1);
-  transition: filter 1.2s ease;
 }
 
 .booklet {
@@ -315,10 +327,10 @@ button {
 
 .live-timer {
   position: absolute;
-  left: 14%;
-  right: 14%;
-  top: 38%;
-  height: 14%;
+  left: 16%;
+  right: 16%;
+  top: 28%;
+  height: 12%;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -361,15 +373,32 @@ button {
 
 .magic-hot {
   position: absolute;
-  left: 18%;
-  right: 18%;
-  top: 52%;
-  height: 12%;
+  left: 12%;
+  right: 12%;
+  top: 49%;
+  height: 10%;
   z-index: 4;
+  display: grid;
+  place-items: center;
   border: 0;
   padding: 0;
   background: transparent;
   cursor: pointer;
+}
+
+.bell-mark {
+  display: none;
+}
+
+.bell-mark svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+@keyframes bellPulse {
+  50% {
+    transform: rotate(-10deg) scale(1.06);
+  }
 }
 
 .door-hint {
@@ -444,6 +473,10 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .bell-mark {
+    animation: none;
+  }
+
   .door-leaf {
     transition-duration: 0.01ms;
   }

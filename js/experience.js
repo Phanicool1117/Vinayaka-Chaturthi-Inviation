@@ -11,6 +11,7 @@
         "assets/frame-01-temple-exterior.jpeg",
         "assets/frame-02-temple-entrance.jpeg",
         "assets/frame-03-doors-closed.jpeg",
+        "assets/frame-05-blue-temple-title.jpeg",
         "assets/frame-09-counting-days.jpeg",
       ].map(
         (src) =>
@@ -33,16 +34,41 @@
   }
 
   function openDoors() {
-    TempleAudio.playBell();
     if (doorsOpen) return;
     doorsOpen = true;
+    TempleAudio.playBell();
+    TempleAudio.startMusic();
     doorsChapter.classList.add("is-open");
     document.getElementById("doorPair").setAttribute("aria-expanded", "true");
     const hint = document.getElementById("doorHint");
     if (hint) hint.hidden = true;
-    TempleAudio.startMusic();
-    if (window.ScrollTrigger) ScrollTrigger.refresh();
-    window.setTimeout(() => goTo("invitation"), 850);
+
+    const left = document.getElementById("doorLeft");
+    const right = document.getElementById("doorRight");
+    const beyond = document.querySelector(".door-beyond");
+    const pair = document.getElementById("doorPair");
+
+    gsap.set(left, { transformOrigin: "left center", transformPerspective: 1600 });
+    gsap.set(right, { transformOrigin: "right center", transformPerspective: 1600 });
+
+    const finish = () => {
+      window.setTimeout(() => goTo("invitation"), 650);
+    };
+
+    if (reduced) {
+      gsap.set(left, { rotateY: -105 });
+      gsap.set(right, { rotateY: 105 });
+      gsap.set(beyond, { filter: "brightness(1)" });
+      finish();
+      return;
+    }
+
+    gsap
+      .timeline({ onComplete: finish })
+      .to(beyond, { filter: "brightness(1)", duration: 0.9, ease: "power1.out" }, 0)
+      .to(left, { rotateY: -118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(right, { rotateY: 118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(pair, { opacity: 0.12, duration: 0.45, ease: "power1.out" }, 1.15);
   }
 
   function openMagic() {
@@ -94,7 +120,7 @@
     ScrollTrigger.create({
       trigger: "#doors",
       start: "top top",
-      end: () => (doorsOpen ? "+=8%" : "+=40%"),
+      end: "+=55%",
       pin: true,
       anticipatePin: 1,
     });
@@ -122,16 +148,27 @@
     document.getElementById("magicBtn").addEventListener("click", openMagic);
     document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
     document.getElementById("exitBtn").addEventListener("click", () => {
-      window.location.href = window.location.pathname.split("?")[0] + "?replay=" + Date.now();
+      const next = new URLSearchParams(window.location.search);
+      next.set("replay", String(Date.now()));
+      window.location.href = window.location.pathname + "?" + next.toString();
     });
   }
 
   Promise.all([preload()]).then(() => {
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      const gate = document.getElementById("deviceGate");
-      gate.hidden = false;
-      gate.removeAttribute("hidden");
-      document.body.classList.add("is-desktop");
+    const params = new URLSearchParams(window.location.search);
+    const isEmbed = params.has("embed");
+    const isWide = window.matchMedia("(min-width: 768px)").matches;
+
+    if (isWide && !isEmbed) {
+      const wrap = document.getElementById("phonePreviewWrap");
+      const frame = document.getElementById("phonePreview");
+      const next = new URLSearchParams();
+      next.set("embed", "1");
+      if (params.get("replay")) next.set("replay", params.get("replay"));
+      frame.src = window.location.pathname + "?" + next.toString();
+      wrap.hidden = false;
+      wrap.removeAttribute("hidden");
+      document.body.classList.add("is-desktop-preview");
       document.getElementById("loader").classList.add("is-gone");
       return;
     }
