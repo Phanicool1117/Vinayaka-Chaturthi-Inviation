@@ -80,12 +80,8 @@
 
   function goTo(id) {
     const el = document.getElementById(id);
-    if (!el) return;
     if (lenis) {
-      lenis.scrollTo(el, {
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
+      lenis.scrollTo(el, { duration: 1.05 });
       return;
     }
     el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
@@ -209,7 +205,7 @@
         trigger,
         start: "top top",
         end,
-        scrub: 1,
+        scrub: 0.6,
         pin: true,
         anticipatePin: 1,
         ...vars,
@@ -221,13 +217,7 @@
     gsap.registerPlugin(ScrollTrigger);
 
     if (window.Lenis && !reduced) {
-      lenis = new Lenis({
-        lerp: 0.08,
-        smoothWheel: true,
-        wheelMultiplier: 0.85,
-        touchMultiplier: 1.2,
-        infinite: false,
-      });
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
@@ -262,10 +252,10 @@
       },
     });
 
-    pinFrame("#invitation", "+=75%").fromTo(
+    pinFrame("#invitation", "+=70%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
-      { rotateY: -180, ease: "power1.inOut" },
+      { rotateY: -180, ease: "none" },
       0
     );
 
