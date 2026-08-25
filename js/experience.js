@@ -66,6 +66,7 @@
         "assets/frame-11-illuminated-ganapati.jpeg",
         "assets/frame-13-golden-rays.jpeg",
         "assets/frame-14-donation-qr.jpeg",
+        "assets/Marigold-1.png",
       ].map(
         (src) =>
           new Promise((resolve) => {
@@ -126,13 +127,76 @@
       .to(pair, { opacity: 0.12, duration: 0.45, ease: "power1.out" }, 1.15);
   }
 
-  function openMagic() {
+  function spawnFlowerBurst(e) {
     TempleAudio.playBell();
-    if (magicOpened) return;
-    magicOpened = true;
-    document.getElementById("countdown").classList.add("is-magic");
-    if (window.ScrollTrigger) ScrollTrigger.refresh();
-    window.setTimeout(() => goTo("blessing"), 180);
+    const posterFit = document.querySelector("#countdown .poster-fit");
+    if (!posterFit) return;
+    const rect = posterFit.getBoundingClientRect();
+
+    let originX = rect.width * 0.5;
+    let originY = rect.height * 0.54;
+
+    if (e && typeof e.clientX === "number" && typeof e.clientY === "number" && (e.clientX !== 0 || e.clientY !== 0)) {
+      originX = e.clientX - rect.left;
+      originY = e.clientY - rect.top;
+    }
+
+    const flowerCount = 28;
+    for (let i = 0; i < flowerCount; i++) {
+      const flower = document.createElement("img");
+      flower.src = "assets/Marigold-1.png";
+      flower.className = "marigold-petal";
+      flower.alt = "";
+      posterFit.appendChild(flower);
+
+      const angle = (Math.PI * 2 * i) / flowerCount + (Math.random() - 0.5) * 0.6;
+      const distance = 90 + Math.random() * 280;
+      const destX = Math.cos(angle) * distance;
+      const destY = Math.sin(angle) * distance - (40 + Math.random() * 70);
+      const gravityY = destY + 90 + Math.random() * 130;
+      const scale = 0.35 + Math.random() * 0.6;
+      const rot = -360 + Math.random() * 720;
+      const duration = 1.4 + Math.random() * 0.8;
+
+      gsap.set(flower, {
+        x: originX - 25,
+        y: originY - 25,
+        scale: 0.1,
+        rotation: Math.random() * 180,
+        opacity: 1
+      });
+
+      gsap.timeline({
+        onComplete: () => {
+          flower.remove();
+        }
+      })
+      .to(flower, {
+        x: originX - 25 + destX,
+        y: originY - 25 + destY,
+        scale: scale,
+        rotation: rot * 0.5,
+        duration: duration * 0.45,
+        ease: "power2.out"
+      }, 0)
+      .to(flower, {
+        x: originX - 25 + destX + (Math.random() - 0.5) * 50,
+        y: originY - 25 + gravityY,
+        rotation: rot,
+        opacity: 0,
+        duration: duration * 0.55,
+        ease: "power1.in"
+      }, duration * 0.45);
+    }
+  }
+
+  function openMagic(e) {
+    spawnFlowerBurst(e);
+    if (!magicOpened) {
+      magicOpened = true;
+      document.getElementById("countdown").classList.add("is-magic");
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    }
   }
 
   function pinFrame(trigger, end, vars) {
