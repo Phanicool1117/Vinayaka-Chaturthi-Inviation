@@ -475,16 +475,16 @@ button {
 .qr-hotspot {
   left: 36.5%;
   width: 27%;
-  top: 51.2%;
-  height: 13.5%;
+  top: 51.5%;
+  height: 13.8%;
   border-radius: 10px;
 }
 
 .number-hotspot {
-  left: 23%;
-  width: 54%;
-  top: 65.3%;
-  height: 3.8%;
+  left: 28%;
+  width: 44%;
+  top: 65.7%;
+  height: 3.6%;
   border-radius: 6px;
   align-items: center;
 }
