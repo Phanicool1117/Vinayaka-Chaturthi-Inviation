@@ -25,12 +25,6 @@ body {
   font-family: var(--sans);
 }
 
-html.is-door-locked,
-html.is-door-locked body {
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
 img {
   display: block;
   max-width: none;
@@ -136,47 +130,25 @@ button {
   background: #efe4cf;
 }
 
-.phone-preview-wrap {
-  display: none;
-}
-
 @media (min-width: 768px) {
-  body.is-desktop-preview {
+  body {
     min-height: 100dvh;
     background: radial-gradient(circle at 50% 12%, #4a2218, #0c0605 62%);
   }
 
-  body.is-desktop-preview main,
-  body.is-desktop-preview .music-toggle,
-  body.is-desktop-preview .loader,
-  body.is-desktop-preview .skip-link {
-    display: none;
+  main {
+    max-width: 440px;
+    margin: 0 auto;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
+    border-left: 1px solid rgba(198, 161, 90, 0.25);
+    border-right: 1px solid rgba(198, 161, 90, 0.25);
+    position: relative;
   }
 
-  body.is-desktop-preview .phone-preview-wrap,
-  body.is-desktop-preview .phone-preview-wrap[hidden] {
-    display: grid;
-    place-items: center;
-    min-height: 100dvh;
-    padding: 1.25rem;
-    gap: 0.85rem;
-  }
-
-  .phone-preview-note {
-    margin: 0;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  .phone-preview {
-    width: min(390px, 100vw - 2rem);
-    height: min(844px, 100dvh - 4.5rem);
-    border: 10px solid #1a0c08;
-    border-radius: 28px;
-    background: #000;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  .loader {
+    max-width: 440px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
