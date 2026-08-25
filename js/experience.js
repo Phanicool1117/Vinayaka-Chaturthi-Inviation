@@ -547,6 +547,15 @@
     }
   }
 
+  function onUserInterrupt(e) {
+    if (!isAutoPlaying) return;
+    const toggle = document.getElementById("autoplayToggle");
+    if (toggle && (e.target === toggle || toggle.contains(e.target))) {
+      return;
+    }
+    stopAutoPlay();
+  }
+
   function bind() {
     document.getElementById("doorLeft").addEventListener("click", openDoors);
     document.getElementById("doorRight").addEventListener("click", openDoors);
@@ -569,9 +578,21 @@
       next.set("replay", String(Date.now()));
       window.location.href = window.location.pathname + "?" + next.toString();
     });
-    window.addEventListener("wheel", blockBypass, { passive: false, capture: true });
-    window.addEventListener("touchmove", blockBypass, { passive: false, capture: true });
-    window.addEventListener("keydown", blockBypass, { capture: true });
+
+    window.addEventListener("pointerdown", onUserInterrupt, { capture: true, passive: true });
+    window.addEventListener("touchstart", onUserInterrupt, { capture: true, passive: true });
+    window.addEventListener("wheel", (e) => {
+      onUserInterrupt(e);
+      blockBypass(e);
+    }, { passive: false, capture: true });
+    window.addEventListener("touchmove", (e) => {
+      onUserInterrupt(e);
+      blockBypass(e);
+    }, { passive: false, capture: true });
+    window.addEventListener("keydown", (e) => {
+      onUserInterrupt(e);
+      blockBypass(e);
+    }, { capture: true });
   }
 
   Promise.all([preload()]).then(() => {
