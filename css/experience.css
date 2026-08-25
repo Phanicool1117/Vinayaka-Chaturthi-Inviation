@@ -327,15 +327,15 @@ button {
 
 .live-timer {
   position: absolute;
-  left: 16%;
-  right: 16%;
-  top: 28%;
-  height: 12%;
+  left: 12%;
+  right: 12%;
+  top: 27.5%;
+  height: 13%;
   z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.35rem 0.4rem;
+  justify-content: space-evenly;
+  padding: 0.25rem 0.35rem;
   background: transparent;
   color: #5a241c;
   font-family: var(--display);
@@ -350,33 +350,37 @@ button {
 }
 
 .live-timer span {
-  font-size: clamp(1.7rem, 7vw, 2.7rem);
+  font-size: clamp(1.4rem, 6.2vw, 2.6rem);
   font-variant-numeric: tabular-nums;
   line-height: 1;
   letter-spacing: 0.02em;
+  font-weight: 600;
 }
 
 .live-timer small {
   margin-top: 0.2rem;
   font-family: var(--sans);
-  font-size: 0.58rem;
+  font-size: clamp(0.5rem, 2.2vw, 0.65rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #5a241c;
+  font-weight: 500;
 }
 
 .live-timer i {
   font-style: normal;
-  font-size: clamp(1.1rem, 4.4vw, 1.7rem);
+  font-size: clamp(0.9rem, 3.8vw, 1.5rem);
   color: #5a241c;
+  opacity: 0.8;
 }
 
 .magic-hot {
   position: absolute;
-  left: 12%;
-  right: 12%;
-  top: 49%;
-  height: 10%;
+  left: 10%;
+  right: 10%;
+  top: 48%;
+  height: 12%;
+  min-height: 48px;
   z-index: 4;
   display: grid;
   place-items: center;
