@@ -108,15 +108,21 @@ button {
   height: 100vh;
   height: 100dvh;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
 
 .frame {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: min(100vw, calc(100vh * 9 / 16));
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100vh, calc(100vw * 16 / 9));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  aspect-ratio: 9 / 16;
   overflow: hidden;
-  background: #1a6ec4;
+  background: #140806;
 }
 
 #approach .frame {
@@ -173,8 +179,9 @@ button {
   }
 
   .phone-preview {
-    width: min(390px, 100vw - 2rem);
-    height: min(844px, 100dvh - 4.5rem);
+    height: min(840px, calc(100dvh - 4.5rem));
+    width: calc(min(840px, calc(100dvh - 4.5rem)) * 9 / 16);
+    aspect-ratio: 9 / 16;
     border: 10px solid #1a0c08;
     border-radius: 28px;
     background: #000;
