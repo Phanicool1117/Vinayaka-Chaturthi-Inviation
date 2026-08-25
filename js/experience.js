@@ -231,13 +231,13 @@
       return;
     }
 
-    pinFrame("#approach", "+=40%")
+    pinFrame("#approach", "+=35%")
       .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
       start: "top top",
-      end: () => (doorsOpen ? "+=18%" : "+=120%"),
+      end: () => (doorsOpen ? "+=0%" : "+=100%"),
       pin: true,
       anticipatePin: 1,
       onEnter: lockDoorScroll,
@@ -252,14 +252,14 @@
       },
     });
 
-    pinFrame("#invitation", "+=70%").fromTo(
+    pinFrame("#invitation", "+=60%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
       { rotateY: -180, ease: "none" },
       0
     );
 
-    pinFrame("#blessing", "+=100%")
+    pinFrame("#blessing", "+=80%")
       .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-logo", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-rays", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0.5)
