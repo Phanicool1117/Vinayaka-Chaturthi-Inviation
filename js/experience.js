@@ -207,8 +207,14 @@
     spawnFlowerBurst(e);
     if (!magicOpened) {
       magicOpened = true;
-      document.getElementById("countdown").classList.add("is-magic");
-      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    }
+    const countEl = document.getElementById("countdown");
+    if (countEl) {
+      if (lenis) {
+        lenis.scrollTo(countEl, { duration: 0.45 });
+      } else {
+        countEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
   }
 
@@ -218,7 +224,7 @@
         trigger,
         start: "top top",
         end,
-        scrub: 0.6,
+        scrub: 0.7,
         pin: true,
         anticipatePin: 1,
         ...vars,
@@ -230,14 +236,27 @@
     gsap.registerPlugin(ScrollTrigger);
 
     if (window.Lenis && !reduced) {
-      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis = new Lenis({
+        lerp: 0.07,
+        smoothWheel: true,
+        wheelMultiplier: 0.65,
+        touchMultiplier: 0.85,
+        duration: 1.2,
+      });
       lenis.on("scroll", (e) => {
-        ScrollTrigger.update();
         if (!doorsOpen && doorsTrigger && e.scroll > doorsTrigger.start) {
           holdAtDoors();
         }
+        ScrollTrigger.update();
       });
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.add((time) => {
+        if (lenis) {
+          if (!doorsOpen && doorsTrigger && lenis.scroll > doorsTrigger.start) {
+            holdAtDoors();
+          }
+          lenis.raf(time * 1000);
+        }
+      });
       gsap.ticker.lagSmoothing(0);
     }
 
@@ -259,7 +278,7 @@
       return;
     }
 
-    pinFrame("#approach", "+=35%")
+    pinFrame("#approach", "+=40%")
       .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
@@ -280,18 +299,62 @@
       },
     });
 
-    pinFrame("#invitation", "+=60%").fromTo(
+    pinFrame("#invitation", "+=70%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
       { rotateY: -180, ease: "none" },
       0
     );
 
-    pinFrame("#blessing", "+=80%")
+    pinFrame("#blessing", "+=90%")
       .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-logo", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-rays", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0.5)
       .to(".is-glow", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0.5);
+
+    const chapters = gsap.utils.toArray(".chapter");
+    ScrollTrigger.create({
+      snap: {
+        snapTo: (value) => {
+          const max = ScrollTrigger.maxScroll(window);
+          if (!max || chapters.length === 0) return value;
+          const targetPx = value * max;
+          let closestPx = targetPx;
+          let minDistance = Infinity;
+
+          chapters.forEach((ch) => {
+            const top = ch.offsetTop;
+            const dist = Math.abs(targetPx - top);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestPx = top;
+            }
+          });
+
+          ScrollTrigger.getAll().forEach((st) => {
+            if (st.pin && st.start !== undefined) {
+              const dStart = Math.abs(targetPx - st.start);
+              if (dStart < minDistance) {
+                minDistance = dStart;
+                closestPx = st.start;
+              }
+              if (st.end !== undefined && st.end < 900000) {
+                const dEnd = Math.abs(targetPx - st.end);
+                if (dEnd < minDistance) {
+                  minDistance = dEnd;
+                  closestPx = st.end;
+                }
+              }
+            }
+          });
+
+          return closestPx / max;
+        },
+        duration: { min: 0.25, max: 0.55 },
+        delay: 0.12,
+        ease: "power1.inOut",
+      },
+    });
   }
 
   function handleUpiClick(e) {
