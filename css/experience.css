@@ -25,6 +25,12 @@ body {
   font-family: var(--sans);
 }
 
+html.is-door-locked,
+html.is-door-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 img {
   display: block;
   max-width: none;

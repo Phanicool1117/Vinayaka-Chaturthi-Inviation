@@ -1,0 +1,86 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #140806;
+      perspective: 1600px;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+    #doors-03-beyond {
+      width: 112%;
+      height: 112%;
+      left: -6%;
+      top: -4%;
+      object-fit: cover;
+    }
+    #doors-03-stage {
+      perspective: 1600px;
+    }
+    .doors-03-leaf {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      background-image: url("assets/frame-03-doors-closed.jpeg");
+      background-size: 200% 100%;
+    }
+    #doors-03-left {
+      left: 0;
+      transform-origin: left center;
+      background-position: left center;
+    }
+    #doors-03-right {
+      right: 0;
+      left: auto;
+      transform-origin: right center;
+      background-position: right center;
+    }
+    #doors-03-hint {
+      top: auto;
+      bottom: 18%;
+      height: auto;
+      text-align: center;
+      color: #e8c978;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      font-size: 20px;
+      font-family: Georgia, serif;
+      font-weight: 600;
+      text-shadow: 0 8px 24px #140806;
+    }
+  </style>
+  <div data-hf-id="hf-boul" id="root" data-composition-id="03-doors" data-width="1080" data-height="1920" data-duration="4.3" data-start="0">
+    <img data-hf-id="hf-fl4g" id="doors-03-beyond" class="clip" data-start="0" data-duration="4.3" data-track-index="0" src="assets/frame-05-blue-temple-title.jpeg" alt="">
+    <div data-hf-id="hf-7rsa" id="doors-03-stage" class="clip" data-start="0" data-duration="4.3" data-track-index="1">
+      <div data-hf-id="hf-oyl1" class="doors-03-leaf" id="doors-03-left"></div>
+      <div data-hf-id="hf-rg54" class="doors-03-leaf" id="doors-03-right"></div>
+    </div>
+    <p data-hf-id="hf-aevj" id="doors-03-hint" class="clip" data-start="0" data-duration="4.3" data-track-index="2">Tap to enter</p>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#doors-03-beyond", { scale: 0.92 }, { scale: 1.12, duration: 3.8, ease: "power1.out" }, 0);
+    tl.fromTo("#doors-03-hint", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.2);
+    tl.to("#doors-03-hint", { opacity: 0, duration: 0.28, ease: "power2.in" }, 1.05);
+    tl.fromTo(
+      "#doors-03-left",
+      { rotateY: 0 },
+      { rotateY: -78, duration: 1.35, ease: "power3.inOut" },
+      1.12
+    );
+    tl.fromTo(
+      "#doors-03-right",
+      { rotateY: 0 },
+      { rotateY: 78, duration: 1.35, ease: "power3.inOut" },
+      1.12
+    );
+    window.__timelines["03-doors"] = tl;
+  </script>
+</template>

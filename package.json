@@ -1,0 +1,23 @@
+{
+  "name": "vinayaka-chaturthi-inviation-(1)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phanicool1117/Vinayaka-Chaturthi-Inviation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Phanicool1117/Vinayaka-Chaturthi-Inviation/issues"
+  },
+  "homepage": "https://github.com/Phanicool1117/Vinayaka-Chaturthi-Inviation#readme",
+  "description": "",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}

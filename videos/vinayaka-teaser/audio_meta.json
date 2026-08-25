@@ -1,0 +1,13 @@
+{
+  "bgm": { "path": "assets/bgm/devotional-music.mp3", "volume": 0.34 },
+  "voices": [],
+  "sfx": [
+    {
+      "frame": 3,
+      "file": "assets/sfx/temple-bell.mp3",
+      "offset_s": 1.05,
+      "duration_s": 2.18,
+      "volume": 0.48
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #140806;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+    #bless-06-logo,
+    #bless-06-glow,
+    #bless-06-gold {
+      width: 118%;
+      height: 118%;
+      left: -9%;
+      top: -7%;
+      object-fit: cover;
+    }
+    #bless-06-glow,
+    #bless-06-gold {
+      opacity: 0;
+    }
+    #bless-06-word {
+      top: 11%;
+      height: auto;
+      text-align: center;
+      color: #e8c978;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      font-size: 20px;
+      font-family: Georgia, serif;
+      font-weight: 600;
+      text-shadow: 0 10px 28px #140806;
+    }
+  </style>
+  <div data-hf-id="hf-zzn8" id="root" data-composition-id="06-blessing" data-width="1080" data-height="1920" data-duration="3.4" data-start="0">
+    <img data-hf-id="hf-3h2v" id="bless-06-logo" class="clip" data-start="0" data-duration="3.4" data-track-index="0" src="assets/frame-10-logo-reveal.jpeg" alt="">
+    <img data-hf-id="hf-o39o" id="bless-06-glow" class="clip" data-start="0" data-duration="3.4" data-track-index="1" src="assets/frame-11-illuminated-ganapati.jpeg" alt="">
+    <img data-hf-id="hf-14c2" id="bless-06-gold" class="clip" data-start="0" data-duration="3.4" data-track-index="2" src="assets/frame-12-divine-golden.jpeg" alt="">
+    <p data-hf-id="hf-61i4" id="bless-06-word" class="clip" data-start="0" data-duration="3.4" data-track-index="3">Blessings</p>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#bless-06-logo", { scale: 0.88 }, { scale: 1.16, duration: 3, ease: "power1.in" }, 0);
+    tl.fromTo("#bless-06-glow", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1.14, duration: 0.85, ease: "power2.out" }, 0.75);
+    tl.fromTo("#bless-06-gold", { opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1.1, duration: 0.9, ease: "power2.inOut" }, 1.85);
+    tl.fromTo("#bless-06-word", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.2);
+    tl.to("#bless-06-word", { opacity: 0, duration: 0.3 }, 1.7);
+    window.__timelines["06-blessing"] = tl;
+  </script>
+</template>

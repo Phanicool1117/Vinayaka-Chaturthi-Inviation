@@ -1,0 +1,47 @@
+{
+  "fps": 30,
+  "seams": [
+    {
+      "id": "lockup→approach",
+      "cut": 2.8,
+      "technique": "zoom-through",
+      "exit": { "selector": "#el-01-lockup", "axis": "z", "dir": 1 },
+      "entry": { "selector": "#el-02-approach", "axis": "z", "dir": 1, "scanRoot": "#el-02-approach" }
+    },
+    {
+      "id": "approach→doors",
+      "cut": 6.2,
+      "technique": "zoom-through",
+      "exit": { "selector": "#el-02-approach", "axis": "z", "dir": 1 },
+      "entry": { "selector": "#el-03-doors", "axis": "z", "dir": 1, "scanRoot": "#el-03-doors" }
+    },
+    {
+      "id": "doors→invitation",
+      "cut": 10.0,
+      "technique": "cut-the-curve LEFT",
+      "exit": { "selector": "#el-03-doors", "axis": "x", "dir": -1 },
+      "entry": { "selector": "#el-04-invitation", "axis": "x", "dir": -1 }
+    },
+    {
+      "id": "invitation→countdown",
+      "cut": 13.0,
+      "technique": "cut-the-curve LEFT",
+      "exit": { "selector": "#el-04-invitation", "axis": "x", "dir": -1 },
+      "entry": { "selector": "#el-05-countdown", "axis": "x", "dir": -1 }
+    },
+    {
+      "id": "countdown→blessing",
+      "cut": 16.2,
+      "technique": "zoom-through",
+      "exit": { "selector": "#el-05-countdown", "axis": "z", "dir": 1 },
+      "entry": { "selector": "#el-06-blessing", "axis": "z", "dir": 1, "scanRoot": "#el-06-blessing" }
+    },
+    {
+      "id": "blessing→cta",
+      "cut": 19.2,
+      "technique": "zoom-through",
+      "exit": { "selector": "#el-06-blessing", "axis": "z", "dir": 1 },
+      "entry": { "selector": "#el-07-cta", "axis": "z", "dir": 1, "scanRoot": "#el-07-cta" }
+    }
+  ]
+}

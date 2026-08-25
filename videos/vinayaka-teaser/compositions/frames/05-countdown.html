@@ -1,0 +1,107 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #140806;
+      color: #f4ead8;
+      font-family: Georgia, serif;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+    #count-05-story,
+    #count-05-poster {
+      width: 112%;
+      height: 112%;
+      left: -6%;
+      top: -4%;
+      object-fit: cover;
+    }
+    #count-05-poster {
+      opacity: 0;
+    }
+    #count-05-veil {
+      background: radial-gradient(ellipse at 50% 38%, rgba(20, 8, 6, 0.08), rgba(20, 8, 6, 0.62));
+    }
+    #count-05-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 16%;
+      text-align: center;
+    }
+    #count-05-kicker {
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      font-size: 20px;
+      color: #f8edd4;
+      font-weight: 600;
+      text-shadow: 0 2px 0 #140806, 0 10px 22px #140806;
+    }
+    #count-05-num {
+      margin: 12px 0 0;
+      font-size: 280px;
+      line-height: 0.8;
+      letter-spacing: -0.06em;
+      color: #e8c978;
+      text-shadow: 0 20px 50px rgba(20, 8, 6, 0.6);
+    }
+    #count-05-date {
+      margin-top: 10px;
+      font-size: 42px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #f8edd4;
+      text-shadow: 0 3px 0 #140806, 0 12px 24px #140806;
+    }
+    #count-05-chip {
+      margin-top: 48px;
+      padding: 14px 28px;
+      border: 1px solid #f8edd4;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 18px;
+      color: #f8edd4;
+      background: rgba(20, 8, 6, 0.55);
+      text-shadow: 0 2px 0 #140806;
+    }
+  </style>
+  <div data-hf-id="hf-orsz" id="root" data-composition-id="05-countdown" data-width="1080" data-height="1920" data-duration="3.6" data-start="0">
+    <img data-hf-id="hf-hy4y" id="count-05-story" class="clip" data-start="0" data-duration="3.6" data-track-index="0" src="assets/frame-08-more-than-celebration.jpeg" alt="">
+    <img data-hf-id="hf-e80z" id="count-05-poster" class="clip" data-start="0" data-duration="3.6" data-track-index="1" src="assets/frame-09-counting-days.jpeg" alt="">
+    <div data-hf-id="hf-mmdf" id="count-05-veil" class="clip" data-start="0" data-duration="3.6" data-track-index="2"></div>
+    <div data-hf-id="hf-bj7k" id="count-05-stack" class="clip" data-start="0" data-duration="3.6" data-track-index="3">
+      <p data-hf-id="hf-7oyk" id="count-05-kicker">Counting the days</p>
+      <p data-hf-id="hf-l7s5" id="count-05-num">21</p>
+      <p data-hf-id="hf-3k9s" id="count-05-date">September 14</p>
+      <p data-hf-id="hf-org5" id="count-05-chip">Touch here for magic</p>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const ticker = { n: 21 };
+    tl.fromTo("#count-05-story", { scale: 1.04, xPercent: 8 }, { scale: 1.1, xPercent: -6, duration: 3.2, ease: "none" }, 0);
+    tl.fromTo("#count-05-poster", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1.14, duration: 0.85, ease: "power2.inOut" }, 0.55);
+    tl.fromTo("#count-05-kicker", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0.7);
+    tl.fromTo("#count-05-num", { scale: 0.72, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" }, 0.85);
+    tl.to(
+      ticker,
+      {
+        n: 14,
+        duration: 1.35,
+        ease: "power2.out",
+        onUpdate: function () {
+          document.getElementById("count-05-num").textContent = String(Math.round(ticker.n));
+        },
+      },
+      0.95
+    );
+    tl.fromTo("#count-05-date", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 1.55);
+    tl.fromTo("#count-05-chip", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 2.15);
+    window.__timelines["05-countdown"] = tl;
+  </script>
+</template>

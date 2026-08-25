@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #F4EAD8;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-app8" id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-4wlk" id="el-01-lockup" class="scene" data-composition-id="01-lockup" data-composition-src="compositions/frames/01-lockup.html" data-start="0" data-duration="3.2" data-track-index="0"></div>
+
+      <div data-hf-id="hf-7fla" id="el-02-approach" class="scene" data-composition-id="02-approach" data-composition-src="compositions/frames/02-approach.html" data-start="2.8" data-duration="3.8" data-track-index="1"></div>
+
+      <div data-hf-id="hf-uquu" id="el-03-doors" class="scene" data-composition-id="03-doors" data-composition-src="compositions/frames/03-doors.html" data-start="6.199999999999999" data-duration="4.3" data-track-index="0"></div>
+
+      <div data-hf-id="hf-as85" id="el-04-invitation" class="scene" data-composition-id="04-invitation" data-composition-src="compositions/frames/04-invitation.html" data-start="10" data-duration="3.5" data-track-index="1"></div>
+
+      <div data-hf-id="hf-jo2v" id="el-05-countdown" class="scene" data-composition-id="05-countdown" data-composition-src="compositions/frames/05-countdown.html" data-start="13" data-duration="3.6" data-track-index="0"></div>
+
+      <div data-hf-id="hf-zv4o" id="el-06-blessing" class="scene" data-composition-id="06-blessing" data-composition-src="compositions/frames/06-blessing.html" data-start="16.2" data-duration="3.4" data-track-index="1"></div>
+
+      <div data-hf-id="hf-20pz" id="el-07-cta" class="scene" data-composition-id="07-cta" data-composition-src="compositions/frames/07-cta.html" data-start="19.2" data-duration="2.8" data-track-index="0"></div>
+
+      <!-- BGM -->
+      <audio data-hf-id="hf-u7gg" id="el-bgm" src="assets/bgm/devotional-music.mp3" data-start="0" data-duration="22" data-track-index="11" data-volume="0.34"></audio>
+
+      <!-- SFX -->
+      <audio data-hf-id="hf-ytmh" id="el-sfx-0" src="assets/sfx/temple-bell.mp3" data-start="7.25" data-duration="2.18" data-track-index="20" data-volume="0.48"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-01-lockup", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 2.8);
+        tl.fromTo("#el-02-approach", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 2.8);
+        tl.to("#el-02-approach", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 6.2);
+        tl.fromTo("#el-03-doors", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 6.2);
+        tl.to("#el-03-doors", { x: -1080, duration: 0.5, ease: "power3.inOut" }, 10);
+        tl.fromTo("#el-04-invitation", { x: 1080, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 10);
+        tl.to("#el-04-invitation", { x: -1080, duration: 0.5, ease: "power3.inOut" }, 13);
+        tl.fromTo("#el-05-countdown", { x: 1080, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 13);
+        tl.to("#el-05-countdown", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 16.2);
+        tl.fromTo("#el-06-blessing", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 16.2);
+        tl.to("#el-06-blessing", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 19.2);
+        tl.fromTo("#el-07-cta", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 19.2);
+        tl.to({}, { duration: 22 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
+    </script>
+  </body>
+</html>

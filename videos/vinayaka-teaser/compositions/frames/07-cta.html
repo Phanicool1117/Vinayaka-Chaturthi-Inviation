@@ -1,0 +1,73 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #140806;
+      color: #f4ead8;
+      font-family: Georgia, serif;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+    #cta-07-rays,
+    #cta-07-qr {
+      width: 112%;
+      height: 112%;
+      left: -6%;
+      top: -4%;
+      object-fit: cover;
+      object-position: top center;
+    }
+    #cta-07-qr {
+      opacity: 0;
+    }
+    #cta-07-veil {
+      background: linear-gradient(to top, rgba(20, 8, 6, 0.78) 0%, rgba(20, 8, 6, 0.18) 48%, transparent 70%);
+    }
+    #cta-07-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 22%;
+      text-align: center;
+    }
+    #cta-07-join {
+      margin: 0;
+      font-size: 72px;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: #e8c978;
+    }
+    #cta-07-url {
+      margin-top: 18px;
+      max-width: 86%;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+      color: #f4ead8;
+      font-family: Georgia, serif;
+    }
+  </style>
+  <div data-hf-id="hf-ejhx" id="root" data-composition-id="07-cta" data-width="1080" data-height="1920" data-duration="2.8" data-start="0">
+    <img data-hf-id="hf-x4v7" id="cta-07-rays" class="clip" data-start="0" data-duration="2.8" data-track-index="0" src="assets/frame-13-golden-rays.jpeg" alt="">
+    <img data-hf-id="hf-zhra" id="cta-07-qr" class="clip" data-start="0" data-duration="2.8" data-track-index="1" src="assets/frame-14-donation-qr.jpeg" alt="">
+    <div data-hf-id="hf-ib37" id="cta-07-veil" class="clip" data-start="0" data-duration="2.8" data-track-index="2"></div>
+    <div data-hf-id="hf-po93" id="cta-07-copy" class="clip" data-start="0" data-duration="2.8" data-track-index="3">
+      <h2 data-hf-id="hf-44fn" id="cta-07-join">Join us</h2>
+      <p data-hf-id="hf-4esr" id="cta-07-url">vinayaka-chaturthi-inviation.vercel.app</p>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#cta-07-rays", { scale: 1.22 }, { scale: 1.05, duration: 2.8, ease: "power2.out" }, 0);
+    tl.fromTo("#cta-07-qr", { opacity: 0, scale: 1.16 }, { opacity: 1, scale: 1.04, duration: 0.85, ease: "power3.out" }, 0.45);
+    tl.fromTo("#cta-07-join", { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.85);
+    tl.fromTo("#cta-07-url", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 1.15);
+    window.__timelines["07-cta"] = tl;
+  </script>
+</template>

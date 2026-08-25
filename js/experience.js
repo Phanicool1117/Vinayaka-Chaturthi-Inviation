@@ -4,6 +4,52 @@
   let doorsOpen = false;
   let magicOpened = false;
   let lenis;
+  let doorsTrigger;
+  let scrollLocked = false;
+
+  function atClosedDoors() {
+    return !doorsOpen && doorsTrigger && doorsTrigger.isActive;
+  }
+
+  function lockDoorScroll() {
+    if (scrollLocked || doorsOpen) return;
+    scrollLocked = true;
+    document.documentElement.classList.add("is-door-locked");
+    if (lenis) lenis.stop();
+  }
+
+  function unlockDoorScroll() {
+    if (!scrollLocked) return;
+    scrollLocked = false;
+    document.documentElement.classList.remove("is-door-locked");
+    if (lenis) lenis.start();
+  }
+
+  function holdAtDoors() {
+    if (doorsOpen || !doorsTrigger) return;
+    const top = doorsTrigger.start;
+    if (lenis) lenis.scrollTo(top, { immediate: true });
+    else window.scrollTo(0, top);
+    doorsTrigger.scroll(top);
+  }
+
+  function blockBypass(event) {
+    if (!scrollLocked || doorsOpen) return;
+    const key = event.key;
+    const scrollKey =
+      event.type === "keydown" &&
+      (key === " " ||
+        key === "Spacebar" ||
+        key === "ArrowDown" ||
+        key === "ArrowUp" ||
+        key === "PageDown" ||
+        key === "PageUp" ||
+        key === "Home" ||
+        key === "End");
+    if (event.type === "keydown" && !scrollKey) return;
+    event.preventDefault();
+    holdAtDoors();
+  }
 
   function preload() {
     return Promise.all(
@@ -52,6 +98,8 @@
     gsap.set(right, { transformOrigin: "right center", transformPerspective: 1600 });
 
     const finish = () => {
+      unlockDoorScroll();
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
       window.setTimeout(() => goTo("invitation"), 650);
     };
 
@@ -117,12 +165,22 @@
       .to(entrance, { opacity: 1, duration: 0.28 }, 0.4)
       .fromTo(entrance, { scale: 1.02 }, { scale: 1.1, ease: "none" }, 0.4);
 
-    ScrollTrigger.create({
+    doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
       start: "top top",
-      end: "+=55%",
+      end: () => (doorsOpen ? "+=18%" : "+=120%"),
       pin: true,
       anticipatePin: 1,
+      onEnter: lockDoorScroll,
+      onEnterBack: lockDoorScroll,
+      onUpdate: (self) => {
+        if (!doorsOpen && self.scroll() > self.start + 2) {
+          holdAtDoors();
+        }
+      },
+      onLeave: () => {
+        if (!doorsOpen) holdAtDoors();
+      },
     });
 
     pinFrame("#invitation", "+=70%").fromTo(
@@ -145,6 +203,7 @@
   function bind() {
     document.getElementById("doorLeft").addEventListener("click", openDoors);
     document.getElementById("doorRight").addEventListener("click", openDoors);
+    document.getElementById("doorPair").addEventListener("click", openDoors);
     document.getElementById("magicBtn").addEventListener("click", openMagic);
     document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
     document.getElementById("exitBtn").addEventListener("click", () => {
@@ -152,6 +211,9 @@
       next.set("replay", String(Date.now()));
       window.location.href = window.location.pathname + "?" + next.toString();
     });
+    window.addEventListener("wheel", blockBypass, { passive: false, capture: true });
+    window.addEventListener("touchmove", blockBypass, { passive: false, capture: true });
+    window.addEventListener("keydown", blockBypass, { capture: true });
   }
 
   Promise.all([preload()]).then(() => {

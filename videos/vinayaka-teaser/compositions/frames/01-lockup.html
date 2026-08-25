@@ -1,0 +1,97 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #140806;
+      color: #f4ead8;
+      font-family: Georgia, serif;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+    #lockup-01-plate {
+      width: 118%;
+      height: 118%;
+      left: -9%;
+      top: -6%;
+      object-fit: cover;
+      filter: brightness(0.52) saturate(1.08);
+    }
+    #lockup-01-veil {
+      background: radial-gradient(ellipse at 50% 42%, rgba(20, 8, 6, 0.15) 0%, rgba(20, 8, 6, 0.72) 78%);
+    }
+    #lockup-01-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 18%;
+      text-align: center;
+      pointer-events: none;
+    }
+    #lockup-01-rule {
+      width: 42%;
+      height: 1px;
+      background: #e8c978;
+      transform-origin: center;
+    }
+    #lockup-01-kicker {
+      margin-top: 28px;
+      font-size: 22px;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #e8c978;
+      font-weight: 600;
+    }
+    #lockup-01-line1,
+    #lockup-01-line2 {
+      margin: 0;
+      line-height: 0.86;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      color: #f4ead8;
+      text-shadow: 0 18px 40px rgba(20, 8, 6, 0.55);
+    }
+    #lockup-01-line1 {
+      margin-top: 22px;
+      font-size: 118px;
+    }
+    #lockup-01-line2 {
+      font-size: 96px;
+      color: #e8c978;
+    }
+    #lockup-01-org {
+      margin-top: 36px;
+      font-size: 22px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #f1dfaf;
+      font-family: Georgia, serif;
+    }
+  </style>
+  <div data-hf-id="hf-zt06" id="root" data-composition-id="01-lockup" data-width="1080" data-height="1920" data-duration="3.2" data-start="0">
+    <img data-hf-id="hf-5t5h" id="lockup-01-plate" class="clip" data-start="0" data-duration="3.2" data-track-index="0" src="assets/frame-01-temple-exterior.jpeg" alt="">
+    <div data-hf-id="hf-vfh1" id="lockup-01-veil" class="clip" data-start="0" data-duration="3.2" data-track-index="1"></div>
+    <div data-hf-id="hf-yoa1" id="lockup-01-copy" class="clip" data-start="0" data-duration="3.2" data-track-index="2">
+      <div data-hf-id="hf-gmv0" id="lockup-01-rule"></div>
+      <p data-hf-id="hf-y0l4" id="lockup-01-kicker">A sacred invitation</p>
+      <h1 data-hf-id="hf-c6yt" id="lockup-01-line1">VINAYAKA</h1>
+      <h2 data-hf-id="hf-obpb" id="lockup-01-line2">CHATURTHI</h2>
+      <p data-hf-id="hf-trca" id="lockup-01-org">Penumuli Perantalamma Youth</p>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#lockup-01-plate", { scale: 1.08, xPercent: -1 }, { scale: 1.18, xPercent: 1, duration: 2.8, ease: "none" }, 0);
+    tl.fromTo("#lockup-01-rule", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.12);
+    tl.fromTo("#lockup-01-kicker", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.28);
+    tl.fromTo("#lockup-01-line1", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power4.out" }, 0.55);
+    tl.fromTo("#lockup-01-line2", { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power4.out" }, 0.78);
+    tl.fromTo("#lockup-01-org", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 1.45);
+    window.__timelines["01-lockup"] = tl;
+  </script>
+</template>
