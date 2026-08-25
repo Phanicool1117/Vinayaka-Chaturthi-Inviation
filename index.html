@@ -131,8 +131,15 @@
 
       <section class="chapter" id="donation" aria-label="Donation">
         <div class="frame poster donation-stage">
-          <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
-          <button class="exit-btn" id="exitBtn" type="button">Exit</button>
+          <div class="poster-fit">
+            <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
+            <a class="upi-hotspot qr-hotspot" id="qrHotspot" href="upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC&cu=INR" title="Tap to Donate via UPI (GPay / PhonePe / Paytm)" aria-label="Donate via UPI using QR code">
+              <span class="upi-tap-pill">Tap to Pay via UPI</span>
+            </a>
+            <a class="upi-hotspot phone-hotspot" id="phoneHotspot" href="upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC&cu=INR" title="Tap to Pay 9849590408 on UPI" aria-label="Donate using mobile number 9849590408"></a>
+            <div class="upi-toast" id="upiToast" role="status" aria-live="polite">Opening UPI App (GPay / PhonePe / Paytm)...</div>
+            <button class="exit-btn" id="exitBtn" type="button">Exit</button>
+          </div>
         </div>
       </section>
     </main>

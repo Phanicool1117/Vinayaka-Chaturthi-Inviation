@@ -200,7 +200,25 @@
       .to(".is-gold", { opacity: 0 }, 0.9);
   }
 
-  function bind() {
+    function handleUpiClick() {
+      const toast = document.getElementById("upiToast");
+      if (toast) {
+        toast.classList.add("is-visible");
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+          toast.classList.remove("is-visible");
+        }, 2800);
+      }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText("9849590408").catch(() => {});
+      }
+    }
+
+    const qrHotspot = document.getElementById("qrHotspot");
+    const phoneHotspot = document.getElementById("phoneHotspot");
+    if (qrHotspot) qrHotspot.addEventListener("click", handleUpiClick);
+    if (phoneHotspot) phoneHotspot.addEventListener("click", handleUpiClick);
+
     document.getElementById("doorLeft").addEventListener("click", openDoors);
     document.getElementById("doorRight").addEventListener("click", openDoors);
     document.getElementById("doorPair").addEventListener("click", openDoors);
