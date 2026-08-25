@@ -366,15 +366,16 @@
   }
 
   function handleUpiClick(e) {
-    const upiUri = "upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC";
+    const isNumber = e && e.currentTarget && e.currentTarget.id === "upiNumberBtn";
+    const textToCopy = isNumber ? "9849590408" : "9849590408-1@okbizaxis";
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText("9849590408-1@okbizaxis").catch(() => {});
+      navigator.clipboard.writeText(textToCopy).catch(() => {});
     }
 
     const toast = document.getElementById("upiToast");
     if (toast) {
-      toast.textContent = "Opening UPI App / Copied UPI ID";
+      toast.textContent = isNumber ? "Copied 9849590408 · Opening UPI" : "Copied UPI ID · Opening UPI";
       toast.hidden = false;
       toast.classList.add("is-visible");
       window.clearTimeout(window._upiToastTimer);
