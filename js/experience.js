@@ -7,6 +7,8 @@
   let doorsTrigger;
   let approachTl;
   let invitationTl;
+  let storyTl;
+  let countdownTl;
   let blessingTl;
   let isAutoPlaying = false;
   let autoPlayTimeouts = [];
@@ -303,9 +305,9 @@
       0
     );
 
-    pinFrame("#story", "+=50%");
+    storyTl = pinFrame("#story", "+=50%");
 
-    pinFrame("#countdown", "+=60%");
+    countdownTl = pinFrame("#countdown", "+=60%");
 
     let hasAutoAdvancedToDonation = false;
     blessingTl = pinFrame("#blessing", "+=60%", {
@@ -394,60 +396,6 @@
     if (label) label.textContent = active ? "Pause" : "Auto Play";
   }
 
-  function getCurrentFrameStep() {
-    const currentScroll = lenis ? lenis.scroll : window.scrollY;
-
-    const donationEl = document.getElementById("donation");
-    if (donationEl && donationEl.offsetTop && currentScroll >= donationEl.offsetTop - 80) {
-      return 12;
-    }
-
-    if (blessingTl && blessingTl.scrollTrigger) {
-      const bStart = blessingTl.scrollTrigger.start;
-      const bEnd = blessingTl.scrollTrigger.end;
-      if (currentScroll >= bStart - 50) {
-        const progress = (currentScroll - bStart) / (bEnd - bStart || 1);
-        if (progress > 0.65) return 11;
-        if (progress > 0.25) return 10;
-        return 9;
-      }
-    }
-
-    const countdownEl = document.getElementById("countdown");
-    if (countdownEl && countdownEl.offsetTop && currentScroll >= countdownEl.offsetTop - 80) {
-      return 7;
-    }
-
-    const storyEl = document.getElementById("story");
-    if (storyEl && storyEl.offsetTop && currentScroll >= storyEl.offsetTop - 80) {
-      return 6;
-    }
-
-    if (invitationTl && invitationTl.scrollTrigger) {
-      const invStart = invitationTl.scrollTrigger.start;
-      const invEnd = invitationTl.scrollTrigger.end;
-      if (currentScroll >= invStart - 50) {
-        const progress = (currentScroll - invStart) / (invEnd - invStart || 1);
-        if (progress > 0.45) return 5;
-        return 4;
-      }
-    }
-
-    if (doorsTrigger && currentScroll >= doorsTrigger.start - 50) {
-      return doorsOpen ? 4 : 2;
-    }
-
-    if (approachTl && approachTl.scrollTrigger) {
-      const appStart = approachTl.scrollTrigger.start;
-      const appEnd = approachTl.scrollTrigger.end;
-      if (currentScroll > appStart + (appEnd - appStart) * 0.4) {
-        return 1;
-      }
-    }
-
-    return 0;
-  }
-
   function toggleAutoPlay() {
     if (isAutoPlaying) {
       stopAutoPlay();
@@ -465,142 +413,179 @@
       autoPlayTimeouts.push(id);
     }
 
-    const currentStep = getCurrentFrameStep();
+    const currentScroll = Math.round(window.scrollY || (lenis ? lenis.scroll : 0));
     let t = 100;
 
-    // If at end (donation), restart from beginning
-    if (currentStep >= 12) {
-      step(() => goTo("approach"), t);
-      t += 2500;
+    function playDonation(offsetT) {
+      step(() => goTo("donation"), offsetT);
+      step(() => stopAutoPlay(), offsetT + 3000);
     }
 
-    // Step 0: Approach Temple Exterior
-    if (currentStep <= 0) {
-      step(() => goTo("approach"), t);
-      t += 2500;
-    }
-
-    // Step 1: Scroll to Entrance
-    if (currentStep <= 1) {
-      step(() => {
-        if (approachTl && approachTl.scrollTrigger) {
-          const target = approachTl.scrollTrigger.end;
-          if (lenis) lenis.scrollTo(target, { duration: 1.4 });
-          else window.scrollTo({ top: target, behavior: "smooth" });
-        }
-      }, t);
-      t += 3000;
-    }
-
-    // Step 2: Scroll to Closed Doors & Tap
-    if (currentStep <= 2) {
-      step(() => {
-        if (doorsTrigger) {
-          if (lenis) lenis.scrollTo(doorsTrigger.start, { duration: 1.2 });
-          else window.scrollTo({ top: doorsTrigger.start, behavior: "smooth" });
-        }
-      }, t);
-      t += 2200;
-
-      step(() => {
-        if (!doorsOpen) {
-          openDoors();
-        }
-      }, t);
-      t += 3500;
-    }
-
-    // Step 4: Scroll to English Invitation
-    if (currentStep <= 4) {
-      step(() => {
-        goTo("invitation");
-      }, t);
-      t += 3500;
-    }
-
-    // Step 5: Flip 3D Booklet to Telugu
-    if (currentStep <= 5) {
-      step(() => {
-        if (invitationTl && invitationTl.scrollTrigger) {
-          const target = invitationTl.scrollTrigger.end;
-          if (lenis) lenis.scrollTo(target, { duration: 1.6 });
-          else window.scrollTo({ top: target, behavior: "smooth" });
-        }
-      }, t);
-      t += 4000;
-    }
-
-    // Step 6: Scroll to Story frame
-    if (currentStep <= 6) {
-      step(() => {
-        goTo("story");
-      }, t);
-      t += 3500;
-    }
-
-    // Step 7: Scroll to Countdown frame
-    if (currentStep <= 7) {
-      step(() => {
-        goTo("countdown");
-      }, t);
-      t += 2200;
-
-      step(() => {
-        const magicBtn = document.getElementById("magicBtn");
-        if (magicBtn) {
-          const rect = magicBtn.getBoundingClientRect();
-          const fakeEvent = {
-            clientX: rect.left + rect.width / 2,
-            clientY: rect.top + rect.height / 2
-          };
-          openMagic(fakeEvent);
-        }
-      }, t);
-      t += 3500;
-    }
-
-    // Step 9: Scroll into Blessing sequence
-    if (currentStep <= 9) {
-      step(() => {
-        goTo("blessing");
-      }, t);
-      t += 2800;
-    }
-
-    // Step 10: Fade to Illuminated Ganapati
-    if (currentStep <= 10) {
-      step(() => {
-        if (blessingTl && blessingTl.scrollTrigger) {
-          const target = blessingTl.scrollTrigger.start + (blessingTl.scrollTrigger.end - blessingTl.scrollTrigger.start) * 0.5;
-          if (lenis) lenis.scrollTo(target, { duration: 1.4 });
-          else window.scrollTo({ top: target, behavior: "smooth" });
-        }
-      }, t);
-      t += 3000;
-    }
-
-    // Step 11: Fade to Golden Rays
-    if (currentStep <= 11) {
+    function playGoldenRays(offsetT) {
       step(() => {
         if (blessingTl && blessingTl.scrollTrigger) {
           const target = blessingTl.scrollTrigger.end;
           if (lenis) lenis.scrollTo(target, { duration: 1.4 });
           else window.scrollTo({ top: target, behavior: "smooth" });
         }
-      }, t);
-      t += 3000;
+      }, offsetT);
+      playDonation(offsetT + 3200);
     }
 
-    // Step 12: Arrive at final Donation frame
-    step(() => {
-      goTo("donation");
-    }, t);
-    t += 3000;
+    function playGanapati(offsetT) {
+      step(() => {
+        if (blessingTl && blessingTl.scrollTrigger) {
+          const target = blessingTl.scrollTrigger.start + (blessingTl.scrollTrigger.end - blessingTl.scrollTrigger.start) * 0.5;
+          if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+          else window.scrollTo({ top: target, behavior: "smooth" });
+        }
+      }, offsetT);
+      playGoldenRays(offsetT + 3200);
+    }
 
-    // Step 13: Finish auto play
-    step(() => {
-      stopAutoPlay();
-    }, t);
+    function playBlessing(offsetT) {
+      step(() => goTo("blessing"), offsetT);
+      playGanapati(offsetT + 2800);
+    }
+
+    function playCountdown(offsetT) {
+      step(() => goTo("countdown"), offsetT);
+      step(() => {
+        const magicBtn = document.getElementById("magicBtn");
+        if (magicBtn) {
+          const rect = magicBtn.getBoundingClientRect();
+          openMagic({
+            clientX: rect.left + rect.width / 2,
+            clientY: rect.top + rect.height / 2
+          });
+        }
+      }, offsetT + 2000);
+      playBlessing(offsetT + 5500);
+    }
+
+    function playStory(offsetT) {
+      step(() => goTo("story"), offsetT);
+      playCountdown(offsetT + 3500);
+    }
+
+    function playTeluguFlip(offsetT) {
+      step(() => {
+        if (invitationTl && invitationTl.scrollTrigger) {
+          const target = invitationTl.scrollTrigger.end;
+          if (lenis) lenis.scrollTo(target, { duration: 1.6 });
+          else window.scrollTo({ top: target, behavior: "smooth" });
+        }
+      }, offsetT);
+      playStory(offsetT + 4000);
+    }
+
+    function playInvitation(offsetT) {
+      step(() => goTo("invitation"), offsetT);
+      playTeluguFlip(offsetT + 3500);
+    }
+
+    function playDoors(offsetT) {
+      step(() => {
+        if (doorsTrigger) {
+          if (lenis) lenis.scrollTo(doorsTrigger.start, { duration: 1.2 });
+          else window.scrollTo({ top: doorsTrigger.start, behavior: "smooth" });
+        }
+      }, offsetT);
+      step(() => {
+        if (!doorsOpen) {
+          openDoors();
+        }
+      }, offsetT + 2000);
+      playInvitation(offsetT + 5500);
+    }
+
+    function playEntrance(offsetT) {
+      step(() => {
+        if (approachTl && approachTl.scrollTrigger) {
+          const target = approachTl.scrollTrigger.end;
+          if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+          else window.scrollTo({ top: target, behavior: "smooth" });
+        }
+      }, offsetT);
+      playDoors(offsetT + 3000);
+    }
+
+    function playFromBeginning(offsetT) {
+      step(() => goTo("approach"), offsetT);
+      playEntrance(offsetT + 2500);
+    }
+
+    // 1. Are they past blessing / at donation?
+    if (blessingTl && blessingTl.scrollTrigger && currentScroll >= blessingTl.scrollTrigger.end - 60) {
+      playFromBeginning(t);
+      return;
+    }
+
+    // 2. Are they inside Blessing?
+    if (blessingTl && blessingTl.scrollTrigger && currentScroll >= blessingTl.scrollTrigger.start - 60) {
+      const bProgress = blessingTl.scrollTrigger.progress;
+      if (bProgress > 0.65) {
+        playDonation(t + 2500);
+      } else if (bProgress > 0.25) {
+        playGoldenRays(t + 2500);
+      } else {
+        playGanapati(t + 2500);
+      }
+      return;
+    }
+
+    // 3. Are they at Countdown?
+    if (countdownTl && countdownTl.scrollTrigger && currentScroll >= countdownTl.scrollTrigger.start - 60) {
+      step(() => {
+        const magicBtn = document.getElementById("magicBtn");
+        if (magicBtn) {
+          const rect = magicBtn.getBoundingClientRect();
+          openMagic({
+            clientX: rect.left + rect.width / 2,
+            clientY: rect.top + rect.height / 2
+          });
+        }
+      }, t + 1000);
+      playBlessing(t + 4500);
+      return;
+    }
+
+    // 4. Are they at Story?
+    if (storyTl && storyTl.scrollTrigger && currentScroll >= storyTl.scrollTrigger.start - 60) {
+      playCountdown(t + 3000);
+      return;
+    }
+
+    // 5. Are they inside Invitation?
+    if (invitationTl && invitationTl.scrollTrigger && currentScroll >= invitationTl.scrollTrigger.start - 60) {
+      const invProgress = invitationTl.scrollTrigger.progress;
+      if (invProgress > 0.45) {
+        playStory(t + 3500);
+      } else {
+        playTeluguFlip(t + 2500);
+      }
+      return;
+    }
+
+    // 6. Are they at Doors?
+    if (doorsTrigger && currentScroll >= doorsTrigger.start - 60) {
+      if (!doorsOpen) {
+        step(() => openDoors(), t + 1000);
+        playInvitation(t + 4500);
+      } else {
+        playInvitation(t + 2500);
+      }
+      return;
+    }
+
+    // 7. Are they at Entrance?
+    if (approachTl && approachTl.scrollTrigger && currentScroll > approachTl.scrollTrigger.start + (approachTl.scrollTrigger.end - approachTl.scrollTrigger.start) * 0.4) {
+      playDoors(t + 2500);
+      return;
+    }
+
+    // Default: Top exterior
+    playFromBeginning(t);
   }
 
   function handleUpiClick(e) {
