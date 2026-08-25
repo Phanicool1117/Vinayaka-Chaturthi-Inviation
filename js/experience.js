@@ -5,6 +5,11 @@
   let magicOpened = false;
   let lenis;
   let doorsTrigger;
+  let approachTl;
+  let invitationTl;
+  let blessingTl;
+  let isAutoPlaying = false;
+  let autoPlayTimeouts = [];
   let scrollLocked = false;
 
   function atClosedDoors() {
@@ -270,7 +275,7 @@
       return;
     }
 
-    pinFrame("#approach", "+=40%")
+    approachTl = pinFrame("#approach", "+=40%")
       .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
@@ -291,7 +296,7 @@
       },
     });
 
-    pinFrame("#invitation", "+=70%").fromTo(
+    invitationTl = pinFrame("#invitation", "+=70%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
       { rotateY: -180, ease: "none" },
@@ -303,7 +308,7 @@
     pinFrame("#countdown", "+=60%");
 
     let hasAutoAdvancedToDonation = false;
-    pinFrame("#blessing", "+=60%", {
+    blessingTl = pinFrame("#blessing", "+=60%", {
       onUpdate: (self) => {
         if (self.progress >= 0.85 && !hasAutoAdvancedToDonation) {
           hasAutoAdvancedToDonation = true;
@@ -324,6 +329,7 @@
     ScrollTrigger.create({
       snap: {
         snapTo: (value) => {
+          if (isAutoPlaying) return value; // allow smooth auto play without snap interference
           const max = ScrollTrigger.maxScroll(window);
           if (!max || chapters.length === 0) return value;
           const targetPx = value * max;
@@ -365,6 +371,161 @@
     });
   }
 
+  function clearAutoPlay() {
+    autoPlayTimeouts.forEach((t) => clearTimeout(t));
+    autoPlayTimeouts = [];
+  }
+
+  function stopAutoPlay() {
+    if (!isAutoPlaying) return;
+    isAutoPlaying = false;
+    clearAutoPlay();
+    updateAutoPlayButton(false);
+  }
+
+  function updateAutoPlayButton(active) {
+    const btn = document.getElementById("autoplayToggle");
+    if (!btn) return;
+    btn.setAttribute("aria-pressed", String(active));
+    btn.classList.toggle("is-active", active);
+    const glyph = btn.querySelector(".autoplay-glyph");
+    const label = btn.querySelector(".autoplay-label");
+    if (glyph) glyph.textContent = active ? "⏸" : "▶";
+    if (label) label.textContent = active ? "Pause" : "Auto Play";
+  }
+
+  function toggleAutoPlay() {
+    if (isAutoPlaying) {
+      stopAutoPlay();
+      return;
+    }
+    isAutoPlaying = true;
+    updateAutoPlayButton(true);
+    clearAutoPlay();
+
+    function step(fn, delay) {
+      const id = setTimeout(() => {
+        if (!isAutoPlaying) return;
+        fn();
+      }, delay);
+      autoPlayTimeouts.push(id);
+    }
+
+    let t = 100;
+
+    // Step 0: Start at top of approach
+    step(() => {
+      goTo("approach");
+    }, t);
+    t += 2500;
+
+    // Step 1: Scroll to entrance
+    step(() => {
+      if (approachTl && approachTl.scrollTrigger) {
+        const target = approachTl.scrollTrigger.end;
+        if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+        else window.scrollTo({ top: target, behavior: "smooth" });
+      }
+    }, t);
+    t += 3000;
+
+    // Step 2: Scroll to closed temple doors
+    step(() => {
+      if (doorsTrigger) {
+        if (lenis) lenis.scrollTo(doorsTrigger.start, { duration: 1.2 });
+        else window.scrollTo({ top: doorsTrigger.start, behavior: "smooth" });
+      }
+    }, t);
+    t += 2200;
+
+    // Step 3: Tap & open doors
+    step(() => {
+      if (!doorsOpen) {
+        openDoors();
+      }
+    }, t);
+    t += 3500;
+
+    // Step 4: Scroll to Invitation Booklet (English)
+    step(() => {
+      goTo("invitation");
+    }, t);
+    t += 3500;
+
+    // Step 5: Flip 3D Booklet to Telugu
+    step(() => {
+      if (invitationTl && invitationTl.scrollTrigger) {
+        const target = invitationTl.scrollTrigger.end;
+        if (lenis) lenis.scrollTo(target, { duration: 1.6 });
+        else window.scrollTo({ top: target, behavior: "smooth" });
+      }
+    }, t);
+    t += 4000;
+
+    // Step 6: Scroll to Story frame
+    step(() => {
+      goTo("story");
+    }, t);
+    t += 3500;
+
+    // Step 7: Scroll to Countdown frame
+    step(() => {
+      goTo("countdown");
+    }, t);
+    t += 2200;
+
+    // Step 8: Trigger "Touch here for magic" button
+    step(() => {
+      const magicBtn = document.getElementById("magicBtn");
+      if (magicBtn) {
+        const rect = magicBtn.getBoundingClientRect();
+        const fakeEvent = {
+          clientX: rect.left + rect.width / 2,
+          clientY: rect.top + rect.height / 2
+        };
+        openMagic(fakeEvent);
+      }
+    }, t);
+    t += 3500;
+
+    // Step 9: Scroll into Blessing sequence
+    step(() => {
+      goTo("blessing");
+    }, t);
+    t += 2800;
+
+    // Step 10: Fade to Illuminated Ganapati
+    step(() => {
+      if (blessingTl && blessingTl.scrollTrigger) {
+        const target = blessingTl.scrollTrigger.start + (blessingTl.scrollTrigger.end - blessingTl.scrollTrigger.start) * 0.5;
+        if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+        else window.scrollTo({ top: target, behavior: "smooth" });
+      }
+    }, t);
+    t += 3000;
+
+    // Step 11: Fade to Golden Rays
+    step(() => {
+      if (blessingTl && blessingTl.scrollTrigger) {
+        const target = blessingTl.scrollTrigger.end;
+        if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+        else window.scrollTo({ top: target, behavior: "smooth" });
+      }
+    }, t);
+    t += 3000;
+
+    // Step 12: Arrive at final Donation frame
+    step(() => {
+      goTo("donation");
+    }, t);
+    t += 3000;
+
+    // Step 13: Finish auto play
+    step(() => {
+      stopAutoPlay();
+    }, t);
+  }
+
   function handleUpiClick(e) {
     const isNumber = e && e.currentTarget && e.currentTarget.id === "upiNumberBtn";
     const textToCopy = isNumber ? "9849590408" : "9849590408-1@okbizaxis";
@@ -386,197 +547,6 @@
     }
   }
 
-  let isAutoScrolling = false;
-  let autoScrollTimeout = null;
-
-  function showGuide(text, duration = 3000) {
-    const bubble = document.getElementById("guideBubble");
-    const label = document.getElementById("guideText");
-    if (!bubble || !label) return;
-    label.textContent = text;
-    bubble.hidden = false;
-    bubble.classList.add("is-visible");
-    window.clearTimeout(window._guideTimer);
-    window._guideTimer = window.setTimeout(() => {
-      bubble.classList.remove("is-visible");
-      window.setTimeout(() => {
-        bubble.hidden = true;
-      }, 300);
-    }, duration);
-  }
-
-  function hideGuide() {
-    const bubble = document.getElementById("guideBubble");
-    if (bubble) {
-      bubble.classList.remove("is-visible");
-      window.setTimeout(() => {
-        bubble.hidden = true;
-      }, 300);
-    }
-  }
-
-  function setAutoScrollState(active) {
-    isAutoScrolling = active;
-    const btn = document.getElementById("autoScrollToggle");
-    if (!btn) return;
-    btn.setAttribute("aria-pressed", String(active));
-    btn.setAttribute("aria-label", active ? "Pause auto scroll" : "Auto play experience");
-    const glyph = btn.querySelector(".auto-glyph");
-    const label = btn.querySelector(".auto-label");
-    if (glyph) glyph.textContent = active ? "⏸" : "▶";
-    if (label) label.textContent = active ? "Pause" : "Auto Play";
-  }
-
-  function stopAutoScroll() {
-    if (!isAutoScrolling) return;
-    setAutoScrollState(false);
-    window.clearTimeout(autoScrollTimeout);
-    hideGuide();
-  }
-
-  function runAutoScrollStep(step) {
-    if (!isAutoScrolling) return;
-
-    if (step === 0) {
-      TempleAudio.startMusic();
-      const approachEl = document.getElementById("approach");
-      if (approachEl) {
-        if (lenis) lenis.scrollTo(approachEl, { duration: 1.1 });
-        else approachEl.scrollIntoView({ behavior: "smooth" });
-      }
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        runAutoScrollStep(1);
-      }, 3400);
-      return;
-    }
-
-    if (step === 1) {
-      if (doorsTrigger) {
-        if (lenis) lenis.scrollTo(doorsTrigger.start, { duration: 1.2 });
-        else window.scrollTo({ top: doorsTrigger.start, behavior: "smooth" });
-      }
-
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        if (!doorsOpen) {
-          showGuide("👉 Tap the temple doors to open", 3500);
-          autoScrollTimeout = window.setTimeout(() => {
-            if (!isAutoScrolling) return;
-            if (!doorsOpen) {
-              openDoors();
-            }
-            autoScrollTimeout = window.setTimeout(() => {
-              if (!isAutoScrolling) return;
-              runAutoScrollStep(2);
-            }, 3200);
-          }, 2800);
-        } else {
-          runAutoScrollStep(2);
-        }
-      }, 1400);
-      return;
-    }
-
-    if (step === 2) {
-      hideGuide();
-      const invEl = document.getElementById("invitation");
-      if (invEl) {
-        if (lenis) lenis.scrollTo(invEl, { duration: 1.2 });
-        else invEl.scrollIntoView({ behavior: "smooth" });
-      }
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        runAutoScrollStep(3);
-      }, 4200);
-      return;
-    }
-
-    if (step === 3) {
-      const storyEl = document.getElementById("story");
-      if (storyEl) {
-        if (lenis) lenis.scrollTo(storyEl, { duration: 1.2 });
-        else storyEl.scrollIntoView({ behavior: "smooth" });
-      }
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        runAutoScrollStep(4);
-      }, 3800);
-      return;
-    }
-
-    if (step === 4) {
-      const countEl = document.getElementById("countdown");
-      if (countEl) {
-        if (lenis) lenis.scrollTo(countEl, { duration: 1.2 });
-        else countEl.scrollIntoView({ behavior: "smooth" });
-      }
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        showGuide("✨ Touching for magic flowers!", 2500);
-        openMagic();
-        autoScrollTimeout = window.setTimeout(() => {
-          if (!isAutoScrolling) return;
-          runAutoScrollStep(5);
-        }, 4000);
-      }, 1400);
-      return;
-    }
-
-    if (step === 5) {
-      hideGuide();
-      const blessEl = document.getElementById("blessing");
-      if (blessEl) {
-        if (lenis) lenis.scrollTo(blessEl, { duration: 1.2 });
-        else blessEl.scrollIntoView({ behavior: "smooth" });
-      }
-      autoScrollTimeout = window.setTimeout(() => {
-        if (!isAutoScrolling) return;
-        runAutoScrollStep(6);
-      }, 3800);
-      return;
-    }
-
-    if (step === 6) {
-      const donEl = document.getElementById("donation");
-      if (donEl) {
-        if (lenis) lenis.scrollTo(donEl, { duration: 1.2 });
-        else donEl.scrollIntoView({ behavior: "smooth" });
-      }
-      showGuide("🙏 Tap QR or Phone Number to copy details", 4000);
-      autoScrollTimeout = window.setTimeout(() => {
-        setAutoScrollState(false);
-      }, 4500);
-    }
-  }
-
-  function startAutoScroll() {
-    setAutoScrollState(true);
-    const currentScroll = lenis ? lenis.scroll : window.scrollY;
-    let initialStep = 0;
-    if (doorsTrigger && currentScroll >= doorsTrigger.start - 50) {
-      initialStep = doorsOpen ? 2 : 1;
-    }
-    const invEl = document.getElementById("invitation");
-    if (invEl && currentScroll >= invEl.offsetTop - 50) initialStep = 2;
-    const storyEl = document.getElementById("story");
-    if (storyEl && currentScroll >= storyEl.offsetTop - 50) initialStep = 3;
-    const countEl = document.getElementById("countdown");
-    if (countEl && currentScroll >= countEl.offsetTop - 50) initialStep = 4;
-    const blessEl = document.getElementById("blessing");
-    if (blessEl && currentScroll >= blessEl.offsetTop - 50) initialStep = 5;
-
-    runAutoScrollStep(initialStep);
-  }
-
-  function toggleAutoScroll() {
-    if (isAutoScrolling) {
-      stopAutoScroll();
-    } else {
-      startAutoScroll();
-    }
-  }
-
   function bind() {
     document.getElementById("doorLeft").addEventListener("click", openDoors);
     document.getElementById("doorRight").addEventListener("click", openDoors);
@@ -585,8 +555,8 @@
     document.getElementById("magicBtn").addEventListener("click", openMagic);
     document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
     
-    const autoToggle = document.getElementById("autoScrollToggle");
-    if (autoToggle) autoToggle.addEventListener("click", toggleAutoScroll);
+    const autoplayToggle = document.getElementById("autoplayToggle");
+    if (autoplayToggle) autoplayToggle.addEventListener("click", toggleAutoPlay);
 
     const upiQrBtn = document.getElementById("upiQrBtn");
     const upiNumberBtn = document.getElementById("upiNumberBtn");
@@ -594,22 +564,14 @@
     if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
 
     document.getElementById("exitBtn").addEventListener("click", () => {
+      stopAutoPlay();
       const next = new URLSearchParams(window.location.search);
       next.set("replay", String(Date.now()));
       window.location.href = window.location.pathname + "?" + next.toString();
     });
-    window.addEventListener("wheel", (e) => {
-      stopAutoScroll();
-      blockBypass(e);
-    }, { passive: false, capture: true });
-    window.addEventListener("touchmove", (e) => {
-      stopAutoScroll();
-      blockBypass(e);
-    }, { passive: false, capture: true });
-    window.addEventListener("keydown", (e) => {
-      stopAutoScroll();
-      blockBypass(e);
-    }, { capture: true });
+    window.addEventListener("wheel", blockBypass, { passive: false, capture: true });
+    window.addEventListener("touchmove", blockBypass, { passive: false, capture: true });
+    window.addEventListener("keydown", blockBypass, { capture: true });
   }
 
   Promise.all([preload()]).then(() => {
