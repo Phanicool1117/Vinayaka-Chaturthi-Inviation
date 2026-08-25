@@ -5,6 +5,64 @@
   let magicOpened = false;
   let lenis;
   let doorsTrigger;
+  let scrollLocked = false;
+
+  function atClosedDoors() {
+    return !doorsOpen && doorsTrigger && doorsTrigger.isActive;
+  }
+
+  function lockDoorScroll() {
+    if (doorsOpen) return;
+    scrollLocked = true;
+    document.documentElement.classList.add("is-door-locked");
+    holdAtDoors();
+    if (lenis) lenis.stop();
+  }
+
+  function unlockDoorScroll() {
+    scrollLocked = false;
+    document.documentElement.classList.remove("is-door-locked");
+    if (lenis) lenis.start();
+  }
+
+  function holdAtDoors() {
+    if (doorsOpen || !doorsTrigger) return;
+    const top = doorsTrigger.start;
+    if (lenis) lenis.scrollTo(top, { immediate: true });
+    window.scrollTo(0, top);
+    if (doorsTrigger.scroll) doorsTrigger.scroll(top);
+  }
+
+  function blockBypass(event) {
+    if (doorsOpen || !doorsTrigger) return;
+    const currentScroll = lenis ? lenis.scroll : window.scrollY;
+    if (currentScroll >= doorsTrigger.start - 10) {
+      if (event.type === "wheel" && event.deltaY > 0) {
+        event.preventDefault();
+        holdAtDoors();
+        return;
+      }
+      if (event.type === "touchmove") {
+        event.preventDefault();
+        holdAtDoors();
+        return;
+      }
+      if (event.type === "keydown") {
+        const key = event.key;
+        const scrollDownKey =
+          key === " " ||
+          key === "Spacebar" ||
+          key === "ArrowDown" ||
+          key === "PageDown" ||
+          key === "End";
+        if (scrollDownKey) {
+          event.preventDefault();
+          holdAtDoors();
+          return;
+        }
+      }
+    }
+  }
 
   function preload() {
     return Promise.all(
@@ -35,9 +93,8 @@
 
   function goTo(id) {
     const el = document.getElementById(id);
-    if (!el) return;
     if (lenis) {
-      lenis.scrollTo(el, { duration: 1.1 });
+      lenis.scrollTo(el, { duration: 1.05 });
       return;
     }
     el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
@@ -62,8 +119,9 @@
     gsap.set(right, { transformOrigin: "right center", transformPerspective: 1600 });
 
     const finish = () => {
+      unlockDoorScroll();
       if (window.ScrollTrigger) ScrollTrigger.refresh();
-      window.setTimeout(() => goTo("invitation"), 500);
+      window.setTimeout(() => goTo("invitation"), 650);
     };
 
     if (reduced) {
@@ -77,9 +135,9 @@
     gsap
       .timeline({ onComplete: finish })
       .to(beyond, { filter: "brightness(1)", duration: 0.9, ease: "power1.out" }, 0)
-      .to(left, { rotateY: -118, duration: 1.5, ease: "power2.inOut" }, 0)
-      .to(right, { rotateY: 118, duration: 1.5, ease: "power2.inOut" }, 0)
-      .to(pair, { opacity: 0.12, duration: 0.45, ease: "power1.out" }, 1.05);
+      .to(left, { rotateY: -118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(right, { rotateY: 118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(pair, { opacity: 0.12, duration: 0.45, ease: "power1.out" }, 1.15);
   }
 
   function spawnFlowerBurst(e) {
@@ -91,15 +149,12 @@
     let originX = rect.width * 0.5;
     let originY = rect.height * 0.54;
 
-    const clientX = e && e.touches && e.touches[0] ? e.touches[0].clientX : (e ? e.clientX : null);
-    const clientY = e && e.touches && e.touches[0] ? e.touches[0].clientY : (e ? e.clientY : null);
-
-    if (typeof clientX === "number" && typeof clientY === "number" && (clientX !== 0 || clientY !== 0)) {
-      originX = clientX - rect.left;
-      originY = clientY - rect.top;
+    if (e && typeof e.clientX === "number" && typeof e.clientY === "number" && (e.clientX !== 0 || e.clientY !== 0)) {
+      originX = e.clientX - rect.left;
+      originY = e.clientY - rect.top;
     }
 
-    const flowerCount = 26;
+    const flowerCount = 28;
     for (let i = 0; i < flowerCount; i++) {
       const flower = document.createElement("img");
       flower.src = "assets/Marigold-1.png";
@@ -108,11 +163,11 @@
       posterFit.appendChild(flower);
 
       const angle = (Math.PI * 2 * i) / flowerCount + (Math.random() - 0.5) * 0.6;
-      const distance = 90 + Math.random() * 260;
+      const distance = 90 + Math.random() * 280;
       const destX = Math.cos(angle) * distance;
       const destY = Math.sin(angle) * distance - (40 + Math.random() * 70);
-      const gravityY = destY + 90 + Math.random() * 120;
-      const scale = 0.35 + Math.random() * 0.55;
+      const gravityY = destY + 90 + Math.random() * 130;
+      const scale = 0.35 + Math.random() * 0.6;
       const rot = -360 + Math.random() * 720;
       const duration = 1.4 + Math.random() * 0.8;
 
@@ -138,7 +193,7 @@
         ease: "power2.out"
       }, 0)
       .to(flower, {
-        x: originX - 25 + destX + (Math.random() - 0.5) * 40,
+        x: originX - 25 + destX + (Math.random() - 0.5) * 50,
         y: originY - 25 + gravityY,
         rotation: rot,
         opacity: 0,
@@ -163,7 +218,7 @@
         trigger,
         start: "top top",
         end,
-        scrub: 0.5,
+        scrub: 0.6,
         pin: true,
         anticipatePin: 1,
         ...vars,
@@ -175,15 +230,26 @@
     gsap.registerPlugin(ScrollTrigger);
 
     if (window.Lenis && !reduced) {
-      lenis = new Lenis({
-        lerp: 0.1,
-        smoothWheel: true,
-        touchMultiplier: 1.5,
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis.on("scroll", (e) => {
+        ScrollTrigger.update();
+        if (!doorsOpen && doorsTrigger && e.scroll > doorsTrigger.start) {
+          holdAtDoors();
+        }
       });
-      lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
     }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!doorsOpen && doorsTrigger && window.scrollY > doorsTrigger.start + 1) {
+          holdAtDoors();
+        }
+      },
+      { passive: false }
+    );
 
     const wide = document.querySelector("#approach .is-wide");
     const entrance = document.querySelector("#approach .is-entrance");
@@ -199,9 +265,19 @@
     doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
       start: "top top",
-      end: () => (doorsOpen ? "+=0%" : "+=80%"),
+      end: () => (doorsOpen ? "+=0%" : "+=999999px"),
       pin: true,
       anticipatePin: 1,
+      onEnter: lockDoorScroll,
+      onEnterBack: lockDoorScroll,
+      onUpdate: (self) => {
+        if (!doorsOpen && self.scroll() > self.start) {
+          holdAtDoors();
+        }
+      },
+      onLeave: () => {
+        if (!doorsOpen) holdAtDoors();
+      },
     });
 
     pinFrame("#invitation", "+=60%").fromTo(
@@ -242,7 +318,7 @@
     document.getElementById("doorLeft").addEventListener("click", openDoors);
     document.getElementById("doorRight").addEventListener("click", openDoors);
     document.getElementById("doorPair").addEventListener("click", openDoors);
-    document.getElementById("doorHint").addEventListener("click", openDoors);
+    document.getElementById("doors").addEventListener("click", openDoors);
     document.getElementById("magicBtn").addEventListener("click", openMagic);
     document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
     const upiQrBtn = document.getElementById("upiQrBtn");
@@ -250,11 +326,33 @@
     if (upiQrBtn) upiQrBtn.addEventListener("click", handleUpiClick);
     if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
     document.getElementById("exitBtn").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const next = new URLSearchParams(window.location.search);
+      next.set("replay", String(Date.now()));
+      window.location.href = window.location.pathname + "?" + next.toString();
     });
+    window.addEventListener("wheel", blockBypass, { passive: false, capture: true });
+    window.addEventListener("touchmove", blockBypass, { passive: false, capture: true });
+    window.addEventListener("keydown", blockBypass, { capture: true });
   }
 
   Promise.all([preload()]).then(() => {
+    const params = new URLSearchParams(window.location.search);
+    const isEmbed = params.has("embed");
+    const isWide = window.matchMedia("(min-width: 768px)").matches;
+
+    if (isWide && !isEmbed) {
+      const wrap = document.getElementById("phonePreviewWrap");
+      const frame = document.getElementById("phonePreview");
+      const next = new URLSearchParams();
+      next.set("embed", "1");
+      if (params.get("replay")) next.set("replay", params.get("replay"));
+      frame.src = window.location.pathname + "?" + next.toString();
+      wrap.hidden = false;
+      wrap.removeAttribute("hidden");
+      document.body.classList.add("is-desktop-preview");
+      document.getElementById("loader").classList.add("is-gone");
+      return;
+    }
     TempleAudio.init();
     TempleCountdown.start();
     document.getElementById("loader").classList.add("is-gone");
