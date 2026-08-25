@@ -133,12 +133,14 @@
         <div class="frame poster donation-stage">
           <div class="poster-fit">
             <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
-            <a class="upi-hotspot qr-hotspot" id="qrHotspot" href="upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC&cu=INR" title="Tap to Donate via UPI (GPay / PhonePe / Paytm)" aria-label="Donate via UPI using QR code">
-              <span class="upi-tap-pill">Tap to Pay via UPI</span>
+            <a class="upi-hotspot qr-hotspot" id="upiQrBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;mc=5812&amp;aid=uGICAgICd_a2yOQ&amp;ver=01&amp;mode=01&amp;tr=BCR2DN6TUXLY7HAC" role="button" aria-label="Pay via UPI with QR code" title="Tap to pay via UPI (GPay / PhonePe / Paytm)">
+              <span class="upi-badge">Tap to Pay</span>
             </a>
-            <a class="upi-hotspot phone-hotspot" id="phoneHotspot" href="upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC&cu=INR" title="Tap to Pay 9849590408 on UPI" aria-label="Donate using mobile number 9849590408"></a>
-            <div class="upi-toast" id="upiToast" role="status" aria-live="polite">Opening UPI App (GPay / PhonePe / Paytm)...</div>
+            <a class="upi-hotspot number-hotspot" id="upiNumberBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;mc=5812&amp;aid=uGICAgICd_a2yOQ&amp;ver=01&amp;mode=01&amp;tr=BCR2DN6TUXLY7HAC" role="button" aria-label="Pay via UPI to mobile number 9849590408" title="Tap to pay via UPI to 9849590408">
+              <span class="upi-badge upi-badge-sm">Tap to Pay</span>
+            </a>
             <button class="exit-btn" id="exitBtn" type="button">Exit</button>
+            <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Opening UPI app...</div>
           </div>
         </div>
       </section>

@@ -2,7 +2,54 @@
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const doorsChapter = document.getElementById("doors");
   let doorsOpen = false;
+  let magicOpened = false;
   let lenis;
+  let doorsTrigger;
+  let scrollLocked = false;
+
+  function atClosedDoors() {
+    return !doorsOpen && doorsTrigger && doorsTrigger.isActive;
+  }
+
+  function lockDoorScroll() {
+    if (scrollLocked || doorsOpen) return;
+    scrollLocked = true;
+    document.documentElement.classList.add("is-door-locked");
+    if (lenis) lenis.stop();
+  }
+
+  function unlockDoorScroll() {
+    if (!scrollLocked) return;
+    scrollLocked = false;
+    document.documentElement.classList.remove("is-door-locked");
+    if (lenis) lenis.start();
+  }
+
+  function holdAtDoors() {
+    if (doorsOpen || !doorsTrigger) return;
+    const top = doorsTrigger.start;
+    if (lenis) lenis.scrollTo(top, { immediate: true });
+    else window.scrollTo(0, top);
+    doorsTrigger.scroll(top);
+  }
+
+  function blockBypass(event) {
+    if (!scrollLocked || doorsOpen) return;
+    const key = event.key;
+    const scrollKey =
+      event.type === "keydown" &&
+      (key === " " ||
+        key === "Spacebar" ||
+        key === "ArrowDown" ||
+        key === "ArrowUp" ||
+        key === "PageDown" ||
+        key === "PageUp" ||
+        key === "Home" ||
+        key === "End");
+    if (event.type === "keydown" && !scrollKey) return;
+    event.preventDefault();
+    holdAtDoors();
+  }
 
   function preload() {
     return Promise.all(
@@ -25,7 +72,6 @@
 
   function goTo(id) {
     const el = document.getElementById(id);
-    if (!el) return;
     if (lenis) {
       lenis.scrollTo(el, { duration: 1.05 });
       return;
@@ -34,38 +80,52 @@
   }
 
   function openDoors() {
-    if (!doorsOpen) {
-      doorsOpen = true;
-      TempleAudio.playBell();
-      TempleAudio.startMusic();
-      if (doorsChapter) doorsChapter.classList.add("is-open");
-      const pair = document.getElementById("doorPair");
-      if (pair) pair.setAttribute("aria-expanded", "true");
-      const hint = document.getElementById("doorHint");
-      if (hint) hint.hidden = true;
+    if (doorsOpen) return;
+    doorsOpen = true;
+    TempleAudio.playBell();
+    TempleAudio.startMusic();
+    doorsChapter.classList.add("is-open");
+    document.getElementById("doorPair").setAttribute("aria-expanded", "true");
+    const hint = document.getElementById("doorHint");
+    if (hint) hint.hidden = true;
+
+    const left = document.getElementById("doorLeft");
+    const right = document.getElementById("doorRight");
+    const beyond = document.querySelector(".door-beyond");
+    const pair = document.getElementById("doorPair");
+
+    gsap.set(left, { transformOrigin: "left center", transformPerspective: 1600 });
+    gsap.set(right, { transformOrigin: "right center", transformPerspective: 1600 });
+
+    const finish = () => {
+      unlockDoorScroll();
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+      window.setTimeout(() => goTo("invitation"), 650);
+    };
+
+    if (reduced) {
+      gsap.set(left, { rotateY: -105 });
+      gsap.set(right, { rotateY: 105 });
+      gsap.set(beyond, { filter: "brightness(1)" });
+      finish();
+      return;
     }
-    goTo("invitation");
+
+    gsap
+      .timeline({ onComplete: finish })
+      .to(beyond, { filter: "brightness(1)", duration: 0.9, ease: "power1.out" }, 0)
+      .to(left, { rotateY: -118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(right, { rotateY: 118, duration: 1.7, ease: "power2.inOut" }, 0)
+      .to(pair, { opacity: 0.12, duration: 0.45, ease: "power1.out" }, 1.15);
   }
 
   function openMagic() {
     TempleAudio.playBell();
-    const countdown = document.getElementById("countdown");
-    if (countdown) countdown.classList.add("is-magic");
-    goTo("blessing");
-  }
-
-  function handleUpiClick() {
-    const toast = document.getElementById("upiToast");
-    if (toast) {
-      toast.classList.add("is-visible");
-      clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => {
-        toast.classList.remove("is-visible");
-      }, 2800);
-    }
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText("9849590408").catch(() => {});
-    }
+    if (magicOpened) return;
+    magicOpened = true;
+    document.getElementById("countdown").classList.add("is-magic");
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+    window.setTimeout(() => goTo("blessing"), 180);
   }
 
   function pinFrame(trigger, end, vars) {
@@ -96,41 +156,33 @@
     const entrance = document.querySelector("#approach .is-entrance");
 
     if (reduced) {
-      if (entrance) entrance.style.opacity = "1";
+      entrance.style.opacity = "1";
       return;
     }
 
-    // Approach
-    pinFrame("#approach", "+=50%")
+    pinFrame("#approach", "+=45%")
       .fromTo(wide, { scale: 1 }, { scale: 1.18, ease: "none" }, 0)
       .to(entrance, { opacity: 1, duration: 0.28 }, 0.4)
       .fromTo(entrance, { scale: 1.02 }, { scale: 1.1, ease: "none" }, 0.4);
 
-    // Temple Doors - smooth scrub opening on scroll
-    const left = document.getElementById("doorLeft");
-    const right = document.getElementById("doorRight");
-    const beyond = document.querySelector(".door-beyond");
-    const pair = document.getElementById("doorPair");
+    doorsTrigger = ScrollTrigger.create({
+      trigger: "#doors",
+      start: "top top",
+      end: () => (doorsOpen ? "+=18%" : "+=120%"),
+      pin: true,
+      anticipatePin: 1,
+      onEnter: lockDoorScroll,
+      onEnterBack: lockDoorScroll,
+      onUpdate: (self) => {
+        if (!doorsOpen && self.scroll() > self.start + 2) {
+          holdAtDoors();
+        }
+      },
+      onLeave: () => {
+        if (!doorsOpen) holdAtDoors();
+      },
+    });
 
-    if (left && right) {
-      gsap.set(left, { transformOrigin: "left center", transformPerspective: 1600 });
-      gsap.set(right, { transformOrigin: "right center", transformPerspective: 1600 });
-
-      pinFrame("#doors", "+=80%", {
-        onEnter: () => {
-          if (!doorsOpen) {
-            TempleAudio.startMusic();
-          }
-        },
-      })
-        .to(beyond, { filter: "brightness(1)", ease: "power1.out" }, 0)
-        .to(left, { rotateY: -118, ease: "power2.inOut" }, 0)
-        .to(right, { rotateY: 118, ease: "power2.inOut" }, 0)
-        .to(pair, { opacity: 0.08, ease: "power1.out" }, 0.6)
-        .to("#doorHint", { opacity: 0, duration: 0.2 }, 0);
-    }
-
-    // Booklet 3D flip
     pinFrame("#invitation", "+=70%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
@@ -138,7 +190,6 @@
       0
     );
 
-    // Divine blessing
     pinFrame("#blessing", "+=110%")
       .fromTo(".is-logo", { scale: 0.92 }, { scale: 1.04, ease: "none" }, 0)
       .to(".is-glow", { opacity: 1 }, 0.22)
@@ -149,33 +200,44 @@
       .to(".is-gold", { opacity: 0 }, 0.9);
   }
 
-  function bind() {
-    const doorLeft = document.getElementById("doorLeft");
-    const doorRight = document.getElementById("doorRight");
-    const doorPair = document.getElementById("doorPair");
-    const doorHint = document.getElementById("doorHint");
-    const magicBtn = document.getElementById("magicBtn");
-    const musicToggle = document.getElementById("musicToggle");
-    const exitBtn = document.getElementById("exitBtn");
-    const qrHotspot = document.getElementById("qrHotspot");
-    const phoneHotspot = document.getElementById("phoneHotspot");
-
-    if (doorLeft) doorLeft.addEventListener("click", openDoors);
-    if (doorRight) doorRight.addEventListener("click", openDoors);
-    if (doorPair) doorPair.addEventListener("click", openDoors);
-    if (doorHint) doorHint.addEventListener("click", openDoors);
-    if (magicBtn) magicBtn.addEventListener("click", openMagic);
-    if (musicToggle) musicToggle.addEventListener("click", () => TempleAudio.toggleMusic());
-    if (qrHotspot) qrHotspot.addEventListener("click", handleUpiClick);
-    if (phoneHotspot) phoneHotspot.addEventListener("click", handleUpiClick);
-
-    if (exitBtn) {
-      exitBtn.addEventListener("click", () => {
-        const next = new URLSearchParams(window.location.search);
-        next.set("replay", String(Date.now()));
-        window.location.href = window.location.pathname + "?" + next.toString();
-      });
+  function handleUpiClick(e) {
+    const upiUri = "upi://pay?pa=9849590408-1@okbizaxis&pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&mc=5812&aid=uGICAgICd_a2yOQ&ver=01&mode=01&tr=BCR2DN6TUXLY7HAC";
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText("9849590408-1@okbizaxis").catch(() => {});
     }
+
+    const toast = document.getElementById("upiToast");
+    if (toast) {
+      toast.textContent = "Opening UPI App / Copied UPI ID";
+      toast.hidden = false;
+      toast.classList.add("is-visible");
+      window.clearTimeout(window._upiToastTimer);
+      window._upiToastTimer = window.setTimeout(() => {
+        toast.classList.remove("is-visible");
+        window.setTimeout(() => { toast.hidden = true; }, 300);
+      }, 3000);
+    }
+  }
+
+  function bind() {
+    document.getElementById("doorLeft").addEventListener("click", openDoors);
+    document.getElementById("doorRight").addEventListener("click", openDoors);
+    document.getElementById("doorPair").addEventListener("click", openDoors);
+    document.getElementById("magicBtn").addEventListener("click", openMagic);
+    document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
+    const upiQrBtn = document.getElementById("upiQrBtn");
+    const upiNumberBtn = document.getElementById("upiNumberBtn");
+    if (upiQrBtn) upiQrBtn.addEventListener("click", handleUpiClick);
+    if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
+    document.getElementById("exitBtn").addEventListener("click", () => {
+      const next = new URLSearchParams(window.location.search);
+      next.set("replay", String(Date.now()));
+      window.location.href = window.location.pathname + "?" + next.toString();
+    });
+    window.addEventListener("wheel", blockBypass, { passive: false, capture: true });
+    window.addEventListener("touchmove", blockBypass, { passive: false, capture: true });
+    window.addEventListener("keydown", blockBypass, { capture: true });
   }
 
   Promise.all([preload()]).then(() => {
@@ -194,18 +256,8 @@
       wrap.removeAttribute("hidden");
       document.body.classList.add("is-desktop-preview");
       document.getElementById("loader").classList.add("is-gone");
-
-      window.addEventListener("wheel", (e) => {
-        try {
-          if (frame && frame.contentWindow) {
-            frame.contentWindow.scrollBy({ top: e.deltaY, behavior: "auto" });
-          }
-        } catch (_) {}
-      }, { passive: true });
-
       return;
     }
-
     TempleAudio.init();
     TempleCountdown.start();
     document.getElementById("loader").classList.add("is-gone");

@@ -23,7 +23,12 @@ body {
   background: var(--wood-deep);
   color: var(--ivory);
   font-family: var(--sans);
-  overscroll-behavior-y: contain;
+}
+
+html.is-door-locked,
+html.is-door-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 img {
@@ -421,109 +426,8 @@ button {
   animation: hintPulse 2.2s ease-in-out infinite;
 }
 
-.upi-hotspot {
-  position: absolute;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: rgba(212, 179, 106, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.qr-hotspot {
-  left: 36%;
-  right: 36%;
-  top: 50.5%;
-  height: 13.5%;
-  border-radius: 6px;
-  border: 1.5px solid transparent;
-}
-
-.qr-hotspot:hover,
-.qr-hotspot:active {
-  border-color: rgba(184, 134, 45, 0.7);
-  background: rgba(212, 179, 106, 0.12);
-  box-shadow: 0 0 16px rgba(212, 179, 106, 0.5);
-  transform: scale(1.02);
-}
-
-.phone-hotspot {
-  left: 33%;
-  right: 33%;
-  top: 64.4%;
-  height: 3.4%;
-  border-radius: 4px;
-  border-bottom: 1.5px solid rgba(184, 134, 45, 0.4);
-}
-
-.phone-hotspot:hover,
-.phone-hotspot:active {
-  background: rgba(212, 179, 106, 0.2);
-  border-bottom-color: rgba(184, 134, 45, 0.9);
-  box-shadow: 0 0 10px rgba(212, 179, 106, 0.4);
-  transform: scale(1.04);
-}
-
-.upi-tap-pill {
-  position: absolute;
-  bottom: -1.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.18rem 0.55rem;
-  background: rgba(255, 248, 230, 0.92);
-  border: 1px solid rgba(184, 134, 45, 0.6);
-  border-radius: 999px;
-  color: #6a3a10;
-  font-family: var(--sans);
-  font-size: 0.54rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  animation: upiPulse 2.4s ease-in-out infinite;
-}
-
-@keyframes upiPulse {
-  0%, 100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 0.92;
-  }
-  50% {
-    transform: translateX(-50%) scale(1.06);
-    opacity: 1;
-    box-shadow: 0 2px 12px rgba(212, 179, 106, 0.6);
-  }
-}
-
-.upi-toast {
-  position: absolute;
-  left: 50%;
-  bottom: calc(max(1.4rem, env(safe-area-inset-bottom)) + 3.2rem);
-  z-index: 25;
-  transform: translateX(-50%) translateY(10px);
-  padding: 0.45rem 1rem;
-  background: rgba(24, 10, 8, 0.92);
-  border: 1px solid var(--gold-bright);
-  border-radius: 20px;
-  color: var(--gold-bright);
-  font-family: var(--sans);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  pointer-events: none;
+.is-open .door-hint {
   opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-}
-
-.upi-toast.is-visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 
 .exit-btn {
@@ -540,6 +444,99 @@ button {
   text-transform: uppercase;
   font-size: 0.72rem;
   cursor: pointer;
+}
+
+.upi-hotspot {
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+  border: 1.5px dashed rgba(232, 201, 120, 0.45);
+  background: rgba(232, 201, 120, 0.04);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 4px;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: rgba(232, 201, 120, 0.25);
+  box-sizing: border-box;
+}
+
+.upi-hotspot:hover,
+.upi-hotspot:active,
+.upi-hotspot:focus-visible {
+  border: 1.5px solid #ffd875;
+  background: rgba(232, 201, 120, 0.16);
+  box-shadow: 0 0 16px rgba(232, 201, 120, 0.45);
+  transform: scale(1.02);
+  outline: none;
+}
+
+.qr-hotspot {
+  left: 36.5%;
+  width: 27%;
+  top: 51.2%;
+  height: 13.5%;
+  border-radius: 10px;
+}
+
+.number-hotspot {
+  left: 23%;
+  width: 54%;
+  top: 65.3%;
+  height: 3.8%;
+  border-radius: 6px;
+  align-items: center;
+}
+
+.upi-badge {
+  opacity: 0;
+  transform: translateY(3px);
+  background: rgba(28, 14, 10, 0.9);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.upi-hotspot:hover .upi-badge,
+.upi-hotspot:focus-visible .upi-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.upi-toast {
+  position: absolute;
+  bottom: 4.8rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: rgba(20, 10, 8, 0.95);
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 0.6rem 1.2rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  border-radius: 6px;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.upi-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .bless.is-logo {
