@@ -539,7 +539,7 @@ button {
   font-size: 0.74rem;
   letter-spacing: 0.08em;
   border-radius: 6px;
-  z-index: 25;
+  z-index: 60;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -551,6 +551,180 @@ button {
 .upi-toast.is-visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+.upi-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(10, 4, 3, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.22s ease-out;
+}
+
+.upi-modal[hidden] {
+  display: none;
+}
+
+.upi-modal-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.upi-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(175deg, #2a120b 0%, #140705 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 16px;
+  padding: 1.3rem 1.1rem 1.1rem;
+  text-align: center;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.85);
+  z-index: 2;
+  color: var(--ivory);
+}
+
+.upi-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.7rem;
+  background: transparent;
+  border: 0;
+  color: var(--gold-bright);
+  font-size: 1.2rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.upi-modal-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.upi-modal-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  letter-spacing: 0.03em;
+}
+
+.upi-modal-subtitle {
+  margin: 0.15rem 0 0.85rem;
+  font-size: 0.68rem;
+  color: rgba(245, 235, 220, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.upi-card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(232, 201, 120, 0.28);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.upi-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(232, 201, 120, 0.1);
+}
+
+.upi-card-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.upi-label {
+  font-size: 0.64rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  min-width: 40px;
+}
+
+.upi-value {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  color: #fff;
+  word-break: break-all;
+  font-weight: 500;
+}
+
+.upi-value-name {
+  font-size: 0.7rem;
+  color: #ffd875;
+  font-weight: 500;
+}
+
+.copy-pill-btn {
+  background: rgba(232, 201, 120, 0.18);
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.copy-pill-btn:active {
+  transform: scale(0.95);
+  background: var(--gold);
+  color: #1a0c08;
+}
+
+.upi-guide-text {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #f7eedc;
+  margin: 0.6rem 0 0.85rem;
+}
+
+.upi-guide-text strong {
+  color: #6ee7b7;
+}
+
+.upi-app-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.upi-app-link {
+  flex: 1;
+  padding: 0.45rem 0.3rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(232, 201, 120, 0.15);
+  border: 1px solid rgba(232, 201, 120, 0.4);
+  transition: background-color 0.2s, transform 0.15s;
+  text-align: center;
+}
+
+.upi-app-link:hover,
+.upi-app-link:active {
+  background: rgba(232, 201, 120, 0.35);
+  transform: translateY(-1px);
 }
 
 .bless.is-logo {

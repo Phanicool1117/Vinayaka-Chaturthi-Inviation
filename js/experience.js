@@ -365,6 +365,20 @@
     });
   }
 
+  function showUpiToast(msg) {
+    const toast = document.getElementById("upiToast");
+    if (toast) {
+      toast.textContent = msg;
+      toast.hidden = false;
+      toast.classList.add("is-visible");
+      window.clearTimeout(window._upiToastTimer);
+      window._upiToastTimer = window.setTimeout(() => {
+        toast.classList.remove("is-visible");
+        window.setTimeout(() => { toast.hidden = true; }, 300);
+      }, 2500);
+    }
+  }
+
   function handleUpiClick(e) {
     const isNumber = e && e.currentTarget && e.currentTarget.id === "upiNumberBtn";
     const textToCopy = isNumber ? "9849590408" : "9849590408-1@okbizaxis";
@@ -373,17 +387,12 @@
       navigator.clipboard.writeText(textToCopy).catch(() => {});
     }
 
-    const toast = document.getElementById("upiToast");
-    if (toast) {
-      toast.textContent = isNumber ? "Copied 9849590408 · Opening UPI" : "Copied UPI ID · Opening UPI";
-      toast.hidden = false;
-      toast.classList.add("is-visible");
-      window.clearTimeout(window._upiToastTimer);
-      window._upiToastTimer = window.setTimeout(() => {
-        toast.classList.remove("is-visible");
-        window.setTimeout(() => { toast.hidden = true; }, 300);
-      }, 3000);
+    const modal = document.getElementById("upiModal");
+    if (modal) {
+      modal.hidden = false;
+      modal.removeAttribute("hidden");
     }
+    showUpiToast(isNumber ? "Copied: 9849590408" : "Copied: 9849590408-1@okbizaxis");
   }
 
   function bind() {
@@ -393,10 +402,44 @@
     document.getElementById("doors").addEventListener("click", openDoors);
     document.getElementById("magicBtn").addEventListener("click", openMagic);
     document.getElementById("musicToggle").addEventListener("click", () => TempleAudio.toggleMusic());
+    
     const upiQrBtn = document.getElementById("upiQrBtn");
     const upiNumberBtn = document.getElementById("upiNumberBtn");
     if (upiQrBtn) upiQrBtn.addEventListener("click", handleUpiClick);
     if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
+
+    const upiModalClose = document.getElementById("upiModalClose");
+    const upiModalBackdrop = document.getElementById("upiModalBackdrop");
+    const closeUpiModal = () => {
+      const modal = document.getElementById("upiModal");
+      if (modal) {
+        modal.hidden = true;
+        modal.setAttribute("hidden", "");
+      }
+    };
+    if (upiModalClose) upiModalClose.addEventListener("click", closeUpiModal);
+    if (upiModalBackdrop) upiModalBackdrop.addEventListener("click", closeUpiModal);
+
+    const copyUpiBtn = document.getElementById("copyUpiBtn");
+    if (copyUpiBtn) {
+      copyUpiBtn.addEventListener("click", () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("9849590408-1@okbizaxis").catch(() => {});
+        }
+        showUpiToast("Copied UPI ID: 9849590408-1@okbizaxis");
+      });
+    }
+
+    const copyNumBtn = document.getElementById("copyNumBtn");
+    if (copyNumBtn) {
+      copyNumBtn.addEventListener("click", () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("9849590408").catch(() => {});
+        }
+        showUpiToast("Copied Phone: 9849590408");
+      });
+    }
+
     document.getElementById("exitBtn").addEventListener("click", () => {
       const next = new URLSearchParams(window.location.search);
       next.set("replay", String(Date.now()));
