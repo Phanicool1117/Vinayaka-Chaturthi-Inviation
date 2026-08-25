@@ -375,14 +375,14 @@
 
     const toast = document.getElementById("upiToast");
     if (toast) {
-      toast.textContent = "Opening UPI App...";
+      toast.textContent = isNumber ? "✅ Copied Phone: 9849590408" : "✅ Copied UPI ID: 9849590408-1@okbizaxis";
       toast.hidden = false;
       toast.classList.add("is-visible");
       window.clearTimeout(window._upiToastTimer);
       window._upiToastTimer = window.setTimeout(() => {
         toast.classList.remove("is-visible");
         window.setTimeout(() => { toast.hidden = true; }, 300);
-      }, 2500);
+      }, 3000);
     }
   }
 

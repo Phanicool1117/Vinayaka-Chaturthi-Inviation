@@ -136,15 +136,15 @@
         <div class="frame poster donation-stage">
           <div class="poster-fit">
             <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
-            <a class="upi-hotspot qr-hotspot" id="upiQrBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;tn=Vinayaka%20Chaturthi%20Donation&amp;cu=INR" role="button" aria-label="Pay via UPI with QR code" title="Tap to pay via UPI (GPay / PhonePe / Paytm)">
-              <span class="upi-badge">Tap to Pay</span>
-            </a>
-            <a class="upi-hotspot number-hotspot" id="upiNumberBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;tn=Vinayaka%20Chaturthi%20Donation&amp;cu=INR" role="button" aria-label="Pay via UPI to mobile number 9849590408" title="Tap to pay via UPI to 9849590408">
-              <span class="upi-badge upi-badge-sm">Tap to Pay</span>
-            </a>
+            <button class="upi-hotspot qr-hotspot" id="upiQrBtn" type="button" aria-label="Copy UPI ID for donation" title="Tap to copy UPI ID (9849590408-1@okbizaxis)">
+              <span class="upi-badge">Tap to Copy ID</span>
+            </button>
+            <button class="upi-hotspot number-hotspot" id="upiNumberBtn" type="button" aria-label="Copy Phone number 9849590408 for donation" title="Tap to copy Phone Number (9849590408)">
+              <span class="upi-badge upi-badge-sm">Tap to Copy No.</span>
+            </button>
             <button class="exit-btn" id="exitBtn" type="button">Exit</button>
 
-            <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Opening UPI app...</div>
+            <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Copied to clipboard!</div>
           </div>
         </div>
       </section>
