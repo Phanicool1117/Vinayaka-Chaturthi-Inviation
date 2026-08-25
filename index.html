@@ -136,53 +136,15 @@
         <div class="frame poster donation-stage">
           <div class="poster-fit">
             <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
-            <button class="upi-hotspot qr-hotspot" id="upiQrBtn" type="button" aria-label="Pay via UPI with QR code" title="Tap to pay via UPI">
+            <a class="upi-hotspot qr-hotspot" id="upiQrBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;tn=Vinayaka%20Chaturthi%20Donation&amp;cu=INR" role="button" aria-label="Pay via UPI with QR code" title="Tap to pay via UPI (GPay / PhonePe / Paytm)">
               <span class="upi-badge">Tap to Pay</span>
-            </button>
-            <button class="upi-hotspot number-hotspot" id="upiNumberBtn" type="button" aria-label="Pay via UPI to mobile number 9849590408" title="Tap to pay via UPI">
+            </a>
+            <a class="upi-hotspot number-hotspot" id="upiNumberBtn" href="upi://pay?pa=9849590408-1@okbizaxis&amp;pn=BHIMAVARAPU%20PHANEENDRA%20REDDY&amp;tn=Vinayaka%20Chaturthi%20Donation&amp;cu=INR" role="button" aria-label="Pay via UPI to mobile number 9849590408" title="Tap to pay via UPI to 9849590408">
               <span class="upi-badge upi-badge-sm">Tap to Pay</span>
-            </button>
+            </a>
             <button class="exit-btn" id="exitBtn" type="button">Exit</button>
 
-            <div class="upi-modal" id="upiModal" hidden>
-              <div class="upi-modal-backdrop" id="upiModalBackdrop"></div>
-              <div class="upi-modal-content">
-                <button class="upi-modal-close" id="upiModalClose" type="button" aria-label="Close">✕</button>
-                <div class="upi-modal-icon">🪔</div>
-                <h3 class="upi-modal-title">Temple Donation</h3>
-                <p class="upi-modal-subtitle">Penumuli Perantalamma Youth</p>
-                
-                <div class="upi-card">
-                  <div class="upi-card-row">
-                    <span class="upi-label">UPI ID</span>
-                    <span class="upi-value">9849590408-1@okbizaxis</span>
-                    <button class="copy-pill-btn" id="copyUpiBtn" type="button">Copy ID</button>
-                  </div>
-                  <div class="upi-card-row">
-                    <span class="upi-label">Phone</span>
-                    <span class="upi-value">9849590408</span>
-                    <button class="copy-pill-btn" id="copyNumBtn" type="button">Copy No.</button>
-                  </div>
-                  <div class="upi-card-row">
-                    <span class="upi-label">Name</span>
-                    <span class="upi-value-name">BHIMAVARAPU PHANEENDRA REDDY</span>
-                  </div>
-                </div>
-
-                <p class="upi-guide-text">
-                  ✨ <strong>Details copied to clipboard!</strong><br>
-                  Open Google Pay, PhonePe, or Paytm and paste to transfer your donation safely with zero bank blocks.
-                </p>
-
-                <div class="upi-app-buttons">
-                  <a class="upi-app-link gpay-link" href="https://gpay.app.goo.gl/" target="_blank" rel="noopener noreferrer">GPay</a>
-                  <a class="upi-app-link phonepe-link" href="phonepe://" target="_blank" rel="noopener noreferrer">PhonePe</a>
-                  <a class="upi-app-link paytm-link" href="paytmmp://" target="_blank" rel="noopener noreferrer">Paytm</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Copied to clipboard!</div>
+            <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Opening UPI app...</div>
           </div>
         </div>
       </section>
