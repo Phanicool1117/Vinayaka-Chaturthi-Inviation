@@ -302,7 +302,19 @@
 
     pinFrame("#countdown", "+=60%");
 
-    pinFrame("#blessing", "+=90%")
+    let hasAutoAdvancedToDonation = false;
+    pinFrame("#blessing", "+=60%", {
+      onUpdate: (self) => {
+        if (self.progress >= 0.85 && !hasAutoAdvancedToDonation) {
+          hasAutoAdvancedToDonation = true;
+          window.setTimeout(() => {
+            goTo("donation");
+          }, 600);
+        } else if (self.progress < 0.3) {
+          hasAutoAdvancedToDonation = false;
+        }
+      },
+    })
       .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-logo", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0)
       .to(".is-rays", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0.5)
