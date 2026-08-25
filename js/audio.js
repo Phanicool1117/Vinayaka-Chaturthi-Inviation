@@ -72,4 +72,47 @@
       setToggle(false);
     },
   };
+
+  let wasPlayingBeforeHide = false;
+
+  function handleVisibility() {
+    const bgm = document.getElementById("bgm");
+    if (!bgm) return;
+
+    if (document.hidden || document.visibilityState === "hidden") {
+      if (!bgm.paused && bgm.volume > 0) {
+        wasPlayingBeforeHide = true;
+        bgm.pause();
+      }
+    } else {
+      if (wasPlayingBeforeHide) {
+        wasPlayingBeforeHide = false;
+        const play = bgm.play();
+        if (play && play.then) {
+          play.catch(() => {});
+        }
+      }
+    }
+  }
+
+  document.addEventListener("visibilitychange", handleVisibility);
+  window.addEventListener("pagehide", () => {
+    const bgm = document.getElementById("bgm");
+    if (bgm && !bgm.paused && bgm.volume > 0) {
+      wasPlayingBeforeHide = true;
+      bgm.pause();
+    }
+  });
+  window.addEventListener("pageshow", () => {
+    if (wasPlayingBeforeHide) {
+      wasPlayingBeforeHide = false;
+      const bgm = document.getElementById("bgm");
+      if (bgm) {
+        const play = bgm.play();
+        if (play && play.then) {
+          play.catch(() => {});
+        }
+      }
+    }
+  });
 })();
