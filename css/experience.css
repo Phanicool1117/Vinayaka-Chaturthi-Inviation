@@ -23,12 +23,7 @@ body {
   background: var(--wood-deep);
   color: var(--ivory);
   font-family: var(--sans);
-}
-
-html.is-door-locked,
-html.is-door-locked body {
-  overflow: hidden;
-  overscroll-behavior: none;
+  overscroll-behavior-y: contain;
 }
 
 img {
