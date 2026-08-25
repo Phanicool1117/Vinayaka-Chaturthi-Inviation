@@ -33,10 +33,20 @@
       <iframe class="phone-preview" id="phonePreview" title="Vinayaka Chaturthi invitation" allow="autoplay"></iframe>
     </div>
 
+    <button class="auto-scroll-toggle" id="autoScrollToggle" type="button" aria-pressed="false" aria-label="Auto play experience">
+      <span class="auto-glyph" aria-hidden="true">▶</span>
+      <span class="auto-label">Auto Play</span>
+    </button>
+
     <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" aria-label="Play music">
       <span class="music-glyph" aria-hidden="true">♪</span>
       <span class="music-label">Play music</span>
     </button>
+
+    <div class="interactive-guide-bubble" id="guideBubble" aria-live="polite" hidden>
+      <span class="guide-icon">✨</span>
+      <span class="guide-text" id="guideText">Tap the doors to enter</span>
+    </div>
 
     <main>
       <section class="chapter" id="approach" aria-label="Approach the temple">

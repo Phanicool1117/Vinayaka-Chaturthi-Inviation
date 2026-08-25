@@ -80,6 +80,48 @@ button {
   pointer-events: none;
 }
 
+.auto-scroll-toggle {
+  position: fixed;
+  z-index: 90;
+  left: max(0.9rem, env(safe-area-inset-left));
+  top: max(0.9rem, env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid rgba(232, 201, 120, 0.45);
+  border-radius: 999px;
+  background: rgba(20, 10, 6, 0.5);
+  color: var(--ivory);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.auto-scroll-toggle:hover,
+.auto-scroll-toggle:active {
+  background: rgba(232, 201, 120, 0.22);
+  border-color: var(--gold);
+}
+
+.auto-scroll-toggle[aria-pressed="true"] {
+  background: rgba(232, 201, 120, 0.28);
+  border-color: #ffd875;
+  color: #ffd875;
+  box-shadow: 0 0 14px rgba(232, 201, 120, 0.4);
+}
+
+.auto-glyph {
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.auto-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 .music-toggle {
   position: fixed;
   z-index: 90;
@@ -101,6 +143,47 @@ button {
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.interactive-guide-bubble {
+  position: fixed;
+  z-index: 95;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  bottom: max(4.5rem, env(safe-area-inset-bottom));
+  background: rgba(26, 12, 8, 0.95);
+  border: 1.5px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
+  animation: guidePulse 1.8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.interactive-guide-bubble.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes guidePulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85), 0 0 0 rgba(232, 201, 120, 0);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.04);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85), 0 0 16px rgba(232, 201, 120, 0.6);
+  }
 }
 
 .chapter {
