@@ -208,14 +208,6 @@
     if (!magicOpened) {
       magicOpened = true;
     }
-    const countEl = document.getElementById("countdown");
-    if (countEl) {
-      if (lenis) {
-        lenis.scrollTo(countEl, { duration: 0.45 });
-      } else {
-        countEl.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
   }
 
   function pinFrame(trigger, end, vars) {
@@ -305,6 +297,10 @@
       { rotateY: -180, ease: "none" },
       0
     );
+
+    pinFrame("#story", "+=50%");
+
+    pinFrame("#countdown", "+=60%");
 
     pinFrame("#blessing", "+=90%")
       .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0)
