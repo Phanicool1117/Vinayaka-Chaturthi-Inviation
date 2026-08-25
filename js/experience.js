@@ -64,7 +64,6 @@
         "assets/frame-09-counting-days.jpeg",
         "assets/frame-10-logo-reveal.jpeg",
         "assets/frame-11-illuminated-ganapati.jpeg",
-        "assets/frame-12-divine-golden.jpeg",
         "assets/frame-13-golden-rays.jpeg",
         "assets/frame-14-donation-qr.jpeg",
       ].map(
@@ -198,13 +197,11 @@
       0
     );
 
-    pinFrame("#blessing", "+=120%")
-      .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.33 }, 0)
-      .to(".is-logo", { opacity: 0, ease: "power1.inOut", duration: 0.33 }, 0)
-      .to(".is-gold", { opacity: 1, ease: "power1.inOut", duration: 0.33 }, 0.33)
-      .to(".is-glow", { opacity: 0, ease: "power1.inOut", duration: 0.33 }, 0.33)
-      .to(".is-rays", { opacity: 1, ease: "power1.inOut", duration: 0.34 }, 0.66)
-      .to(".is-gold", { opacity: 0, ease: "power1.inOut", duration: 0.34 }, 0.66);
+    pinFrame("#blessing", "+=100%")
+      .to(".is-glow", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0)
+      .to(".is-logo", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0)
+      .to(".is-rays", { opacity: 1, ease: "power1.inOut", duration: 0.5 }, 0.5)
+      .to(".is-glow", { opacity: 0, ease: "power1.inOut", duration: 0.5 }, 0.5);
   }
 
   function handleUpiClick(e) {
