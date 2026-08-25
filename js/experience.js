@@ -205,7 +205,7 @@
         trigger,
         start: "top top",
         end,
-        scrub: 0.6,
+        scrub: 0.5,
         pin: true,
         anticipatePin: 1,
         ...vars,
@@ -217,7 +217,11 @@
     gsap.registerPlugin(ScrollTrigger);
 
     if (window.Lenis && !reduced) {
-      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      lenis = new Lenis({
+        lerp: 0.08,
+        smoothWheel: true,
+        syncTouch: true,
+      });
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
@@ -231,8 +235,8 @@
       return;
     }
 
-    pinFrame("#approach", "+=40%")
-      .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
+    pinFrame("#approach", "+=50%")
+      .to(entrance, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
@@ -252,10 +256,10 @@
       },
     });
 
-    pinFrame("#invitation", "+=70%").fromTo(
+    pinFrame("#invitation", "+=75%").fromTo(
       "#bookletPage",
       { rotateY: 0 },
-      { rotateY: -180, ease: "none" },
+      { rotateY: -180, ease: "power1.inOut" },
       0
     );
 
