@@ -57,7 +57,6 @@
         "assets/frame-01-temple-exterior.jpeg",
         "assets/frame-02-temple-entrance.jpeg",
         "assets/frame-03-doors-closed.jpeg",
-        "assets/frame-05-blue-temple-title.jpeg",
         "assets/frame-06-english-invitation.jpeg",
         "assets/frame-07-telugu-invitation.jpeg",
         "assets/frame-08-more-than-celebration.jpeg",
@@ -96,6 +95,15 @@
     const hint = document.getElementById("doorHint");
     if (hint) hint.hidden = true;
 
+    const video = document.getElementById("blueTempleVideo");
+    if (video) {
+      video.currentTime = 0;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+
     const left = document.getElementById("doorLeft");
     const right = document.getElementById("doorRight");
     const beyond = document.querySelector(".door-beyond");
@@ -107,7 +115,7 @@
     const finish = () => {
       unlockDoorScroll();
       if (window.ScrollTrigger) ScrollTrigger.refresh();
-      window.setTimeout(() => goTo("invitation"), 650);
+      window.setTimeout(() => goTo("invitation"), 1000);
     };
 
     if (reduced) {
@@ -234,6 +242,12 @@
     const upiNumberBtn = document.getElementById("upiNumberBtn");
     if (upiQrBtn) upiQrBtn.addEventListener("click", handleUpiClick);
     if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
+    const video = document.getElementById("blueTempleVideo");
+    if (video) {
+      video.addEventListener("ended", () => {
+        video.pause();
+      });
+    }
     document.getElementById("exitBtn").addEventListener("click", () => {
       const next = new URLSearchParams(window.location.search);
       next.set("replay", String(Date.now()));
