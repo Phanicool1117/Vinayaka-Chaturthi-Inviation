@@ -267,23 +267,20 @@ button {
 
 .is-open .door-beyond {
   filter: brightness(1);
-.door-stage,
-.door-stage .poster-fit {
-  perspective: 1600px;
-  perspective-origin: 50% 45%;
 }
 
-.booklet,
-.booklet .poster-fit {
+.booklet {
+  display: grid;
+  place-items: center;
   perspective: 2200px;
-  background: #2a120e;
+  background: #140806;
 }
 
 .booklet-page {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: min(100vw, calc(100dvh * 966 / 1628));
+  height: min(100dvh, calc(100vw * 1628 / 966));
+  aspect-ratio: 966 / 1628;
   transform-style: preserve-3d;
 }
 
@@ -298,8 +295,7 @@ button {
 .page-face img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  object-fit: contain;
 }
 
 .page-back {
@@ -310,20 +306,17 @@ button {
   display: grid;
   place-items: center;
   background: #140806;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 }
 
 .poster-fit {
   position: relative;
-  width: min(100vw, calc(100dvh * 0.593366));
-  height: min(100dvh, calc(100vw * 1.6853));
+  width: min(100vw, calc(100dvh * 966 / 1628));
+  height: min(100dvh, calc(100vw * 1628 / 966));
   aspect-ratio: 966 / 1628;
   max-width: 100%;
   max-height: 100%;
-  overflow: hidden;
   margin: auto;
+  overflow: hidden;
 }
 
 .poster-fit .shot {
@@ -331,7 +324,7 @@ button {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
 }
 

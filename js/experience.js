@@ -80,8 +80,12 @@
 
   function goTo(id) {
     const el = document.getElementById(id);
+    if (!el) return;
     if (lenis) {
-      lenis.scrollTo(el, { duration: 1.05 });
+      lenis.scrollTo(el, {
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
       return;
     }
     el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
@@ -205,7 +209,7 @@
         trigger,
         start: "top top",
         end,
-        scrub: 0.5,
+        scrub: 1,
         pin: true,
         anticipatePin: 1,
         ...vars,
@@ -220,7 +224,9 @@
       lenis = new Lenis({
         lerp: 0.08,
         smoothWheel: true,
-        syncTouch: true,
+        wheelMultiplier: 0.85,
+        touchMultiplier: 1.2,
+        infinite: false,
       });
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => lenis.raf(time * 1000));
@@ -235,8 +241,8 @@
       return;
     }
 
-    pinFrame("#approach", "+=50%")
-      .to(entrance, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 0);
+    pinFrame("#approach", "+=40%")
+      .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
