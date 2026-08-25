@@ -167,10 +167,8 @@
       return;
     }
 
-    pinFrame("#approach", "+=45%")
-      .fromTo(wide, { scale: 1 }, { scale: 1.18, ease: "none" }, 0)
-      .to(entrance, { opacity: 1, duration: 0.28 }, 0.4)
-      .fromTo(entrance, { scale: 1.02 }, { scale: 1.1, ease: "none" }, 0.4);
+    pinFrame("#approach", "+=40%")
+      .to(entrance, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
 
     doorsTrigger = ScrollTrigger.create({
       trigger: "#doors",
