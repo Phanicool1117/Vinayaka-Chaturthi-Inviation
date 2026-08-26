@@ -588,10 +588,17 @@
     playFromBeginning(t);
   }
 
-  function showToast(msg) {
+  function handleUpiClick(e) {
+    const isNumber = e && e.currentTarget && e.currentTarget.id === "upiNumberBtn";
+    const textToCopy = isNumber ? "9849590408" : "9849590408-1@okbizaxis";
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).catch(() => {});
+    }
+
     const toast = document.getElementById("upiToast");
     if (toast) {
-      toast.textContent = msg;
+      toast.textContent = isNumber ? "✅ Copied Phone: 9849590408" : "✅ Copied UPI ID: 9849590408-1@okbizaxis";
       toast.hidden = false;
       toast.classList.add("is-visible");
       window.clearTimeout(window._upiToastTimer);
@@ -602,42 +609,10 @@
     }
   }
 
-  function openDonationPopup() {
-    const popup = document.getElementById("donationPopup");
-    if (popup) {
-      popup.setAttribute("aria-hidden", "false");
-      popup.classList.add("is-active");
-    }
-  }
-
-  function closeDonationPopup() {
-    const popup = document.getElementById("donationPopup");
-    if (popup) {
-      popup.setAttribute("aria-hidden", "true");
-      popup.classList.remove("is-active");
-    }
-  }
-
-  function handleUpiClick(e) {
-    const isNumber = e && e.currentTarget && e.currentTarget.id === "upiNumberBtn";
-    const textToCopy = isNumber ? "9849590408" : "9849590408-1@okbizaxis";
-    
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(textToCopy).catch(() => {});
-    }
-
-    openDonationPopup();
-    showToast(isNumber ? "✅ Copied Phone: 9849590408" : "✅ Copied UPI ID: 9849590408-1@okbizaxis");
-  }
-
   function onUserInterrupt(e) {
     if (!isAutoPlaying) return;
     const toggle = document.getElementById("autoplayToggle");
-    const popup = document.getElementById("donationPopup");
     if (toggle && (e.target === toggle || toggle.contains(e.target))) {
-      return;
-    }
-    if (popup && (e.target === popup || popup.contains(e.target))) {
       return;
     }
     stopAutoPlay();
@@ -658,30 +633,6 @@
     const upiNumberBtn = document.getElementById("upiNumberBtn");
     if (upiQrBtn) upiQrBtn.addEventListener("click", handleUpiClick);
     if (upiNumberBtn) upiNumberBtn.addEventListener("click", handleUpiClick);
-
-    const donationPopupClose = document.getElementById("donationPopupClose");
-    const donationPopupBackdrop = document.getElementById("donationPopupBackdrop");
-    if (donationPopupClose) donationPopupClose.addEventListener("click", closeDonationPopup);
-    if (donationPopupBackdrop) donationPopupBackdrop.addEventListener("click", closeDonationPopup);
-
-    const popupCopyUpiBtn = document.getElementById("popupCopyUpiBtn");
-    const popupCopyPhoneBtn = document.getElementById("popupCopyPhoneBtn");
-    if (popupCopyUpiBtn) {
-      popupCopyUpiBtn.addEventListener("click", () => {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText("9849590408-1@okbizaxis").catch(() => {});
-        }
-        showToast("✅ Copied UPI ID: 9849590408-1@okbizaxis");
-      });
-    }
-    if (popupCopyPhoneBtn) {
-      popupCopyPhoneBtn.addEventListener("click", () => {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText("9849590408").catch(() => {});
-        }
-        showToast("✅ Copied Phone: 9849590408");
-      });
-    }
 
     document.getElementById("exitBtn").addEventListener("click", () => {
       stopAutoPlay();

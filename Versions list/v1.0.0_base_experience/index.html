@@ -141,57 +141,13 @@
         <div class="frame poster donation-stage">
           <div class="poster-fit">
             <img class="shot donation-shot" src="assets/frame-14-donation-qr.jpeg" alt="Donation page with QR code." />
-            <button class="upi-hotspot qr-hotspot" id="upiQrBtn" type="button" aria-label="Open donation QR code popup" title="Tap to view QR & copy UPI">
-              <span class="upi-badge">Tap for QR</span>
+            <button class="upi-hotspot qr-hotspot" id="upiQrBtn" type="button" aria-label="Copy UPI ID for donation" title="Tap to copy UPI ID (9849590408-1@okbizaxis)">
+              <span class="upi-badge">Tap to Copy ID</span>
             </button>
-            <button class="upi-hotspot number-hotspot" id="upiNumberBtn" type="button" aria-label="Open donation phone number popup" title="Tap to view Phone & copy">
-              <span class="upi-badge upi-badge-sm">Tap for Phone</span>
+            <button class="upi-hotspot number-hotspot" id="upiNumberBtn" type="button" aria-label="Copy Phone number 9849590408 for donation" title="Tap to copy Phone Number (9849590408)">
+              <span class="upi-badge upi-badge-sm">Tap to Copy No.</span>
             </button>
             <button class="exit-btn" id="exitBtn" type="button">Exit</button>
-
-            <!-- frame-14-donation-qr popup -->
-            <div class="donation-popup-overlay" id="donationPopup" aria-hidden="true" role="dialog" aria-modal="true" aria-label="frame-14-donation-qr popup">
-              <div class="donation-popup-backdrop" id="donationPopupBackdrop"></div>
-              <div class="donation-popup-card">
-                <button class="donation-popup-close" id="donationPopupClose" type="button" aria-label="Close popup">✕</button>
-                <div class="donation-popup-header">
-                  <span class="donation-diya">🪔</span>
-                  <h3 class="donation-popup-title">Temple Donation</h3>
-                  <p class="donation-popup-subtitle">Penumuli Perantalamma Youth</p>
-                </div>
-
-                <div class="donation-qr-wrapper">
-                  <img class="donation-popup-qr-img" src="assets/frame-14-donation-qr.jpeg" alt="Donation QR Code" />
-                </div>
-
-                <div class="donation-popup-details">
-                  <div class="donation-detail-row">
-                    <div class="donation-detail-info">
-                      <span class="donation-detail-label">UPI ID</span>
-                      <span class="donation-detail-value">9849590408-1@okbizaxis</span>
-                    </div>
-                    <button class="donation-copy-btn" id="popupCopyUpiBtn" type="button">Copy UPI</button>
-                  </div>
-
-                  <div class="donation-detail-row">
-                    <div class="donation-detail-info">
-                      <span class="donation-detail-label">Mobile Number</span>
-                      <span class="donation-detail-value">9849590408</span>
-                    </div>
-                    <button class="donation-copy-btn" id="popupCopyPhoneBtn" type="button">Copy No.</button>
-                  </div>
-
-                  <div class="donation-name-row">
-                    <span class="donation-name-label">Beneficiary:</span>
-                    <span class="donation-name-val">BHIMAVARAPU PHANEENDRA REDDY</span>
-                  </div>
-                </div>
-
-                <p class="donation-popup-note">
-                  ✨ Details copied to clipboard can be pasted in GPay, PhonePe, Paytm, or BHIM.
-                </p>
-              </div>
-            </div>
 
             <div class="upi-toast" id="upiToast" aria-live="polite" hidden>Copied to clipboard!</div>
           </div>
