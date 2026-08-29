@@ -20,5 +20,9 @@
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0"
+  },
+  "devDependencies": {
+    "jpeg-js": "^0.4.4",
+    "jsqr": "^1.4.0"
   }
 }
