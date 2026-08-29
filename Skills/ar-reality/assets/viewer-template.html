@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR Reality — Model Viewer</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: #101010; }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+    }
+    /* Simple hotspot dot + label — customize freely */
+    .hotspot {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.35);
+      border: none;
+      cursor: pointer;
+    }
+    .hotspot-label {
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: sans-serif;
+      font-size: 13px;
+      transform: translate(12px, -50%);
+      white-space: nowrap;
+    }
+    #ar-button {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border-radius: 24px;
+      border: none;
+      padding: 12px 20px;
+      font-family: sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    REQUIRED CUSTOMIZATION:
+    - src        -> your .glb file (used by browser preview, Android Scene Viewer, WebXR)
+    - ios-src    -> your .usdz file (used by iOS Quick Look)
+    - alt        -> accessible description of the model
+    - poster     -> optional preview image shown while the model loads
+  -->
+  <model-viewer
+    id="viewer"
+    src="model.glb"
+    ios-src="model.usdz"
+    alt="A 3D model, viewable in AR"
+    ar
+    ar-modes="scene-viewer webxr quick-look"
+    ar-scale="auto"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    exposure="1"
+  >
+    <!-- Example hotspot: tap to show info. Add/remove as needed. -->
+    <button
+      class="hotspot"
+      slot="hotspot-1"
+      data-position="0 0.05 0"
+      data-normal="0 1 0"
+      data-visibility-attribute="visible"
+      onclick="document.getElementById('info-1').classList.toggle('shown')"
+    ></button>
+    <div id="info-1" class="hotspot-label" slot="hotspot-1">Tap for details →</div>
+
+    <button id="ar-button" slot="ar-button">View in your space</button>
+  </model-viewer>
+
+  <script>
+    // Example: play a baked-in animation clip on tap, if the model has one.
+    const viewer = document.getElementById('viewer');
+    viewer.addEventListener('load', () => {
+      // console.log('Available animations:', viewer.availableAnimations);
+    });
+    viewer.addEventListener('click', () => {
+      if (viewer.availableAnimations && viewer.availableAnimations.length) {
+        viewer.play();
+      }
+    });
+  </script>
+
+</body>
+</html>

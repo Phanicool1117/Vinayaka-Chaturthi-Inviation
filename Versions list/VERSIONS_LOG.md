@@ -8,6 +8,7 @@ This directory stores historical snapshot versions of the codebase for archival,
 
 | Version | Date & Time | Description | Files Included |
 | :--- | :--- | :--- | :--- |
+| **v1.9.0_ar_reality_skill_upgrade** | 2026-08-30 02:30 | Integrated Skills/ar-reality/ standards: Google <model-viewer> WebXR integration, interactive 3D hotspots (Pooja Schedule modal, Donation Seva modal with QR & copy actions, Temple Bell chime with flower burst), and responsive gesture handling. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, js/audio.js, ssets/ar-invitation-qr.png |
 | **v1.8.0_ar_controls_touch_and_audio_fix** | 2026-08-30 02:05 | Fixed AR 3D gesture controls (pinch zoom, 360° swipe rotate, 2-finger pan) using a dedicated capture plane, added working AR Auto Play Pause/Resume button, and connected full postMessage audio and autoplay synchronization. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, js/audio.js, ssets/ar-invitation-qr.png |
 | **v1.7.0_unified_ar_surface_scanner** | 2026-08-30 02:01 | Unified 3D AR view without separate tabs, realistic room depth distance (scale: 0.78, 	ranslateZ: -140px), welcoming Camera Permission Gate (View AR Experience / Continue to Website), and golden camera scanner reveal animation. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, ssets/ar-invitation-qr.png |
 | **v1.6.0_spatial_3d_webar_mandapam** | 2026-08-30 01:41 | Complete 3D spatial temple mandapam AR overhaul with 3D Gopuram, carved pillars, pedestal with diyas, ringing temple bell, 3D marigold shower, and gesture controls. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, ssets/ar-invitation-qr.png |
@@ -22,7 +23,7 @@ This directory stores historical snapshot versions of the codebase for archival,
 
 ## 📌 Version Highlights
 
-### 1.8.0_ar_controls_touch_and_audio_fix (Latest)
-- **Dedicated Gesture Plane:** Fixed pinch-zoom, 1-finger 360° rotate, and 2-finger drag pan so iframe touch interception no longer blocks AR controls.
-- **Dedicated AR Auto Play Control:** Added ⏸ Pause / ▶ Play button in AR bottom bar with two-way cross-frame synchronization.
-- **Sound Toggle Fix:** Audio pause and resume now properly fade and toggle background music via TempleAudio.pauseMusic() and TempleAudio.startMusic().
+### 1.9.0_ar_reality_skill_upgrade (Latest)
+- **AR Reality Skill Hotspots:** Integrated interactive 3D hotspots for **Pooja Schedule** and **Donation Seva** with in-AR modal dialogs, QR display, and copy actions.
+- **Google <model-viewer> Integration:** Loaded model-viewer v3.5.0 supporting WebXR standards.
+- **Enhanced Bell & Diya Interactions:** Sound chimes, flower petal explosion, and realistic flame flicker.
