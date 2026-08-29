@@ -8,6 +8,7 @@ This directory stores historical snapshot versions of the codebase for archival,
 
 | Version | Date & Time | Description | Files Included |
 | :--- | :--- | :--- | :--- |
+| **v1.8.0_ar_controls_touch_and_audio_fix** | 2026-08-30 02:05 | Fixed AR 3D gesture controls (pinch zoom, 360° swipe rotate, 2-finger pan) using a dedicated capture plane, added working AR Auto Play Pause/Resume button, and connected full postMessage audio and autoplay synchronization. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, js/audio.js, ssets/ar-invitation-qr.png |
 | **v1.7.0_unified_ar_surface_scanner** | 2026-08-30 02:01 | Unified 3D AR view without separate tabs, realistic room depth distance (scale: 0.78, 	ranslateZ: -140px), welcoming Camera Permission Gate (View AR Experience / Continue to Website), and golden camera scanner reveal animation. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, ssets/ar-invitation-qr.png |
 | **v1.6.0_spatial_3d_webar_mandapam** | 2026-08-30 01:41 | Complete 3D spatial temple mandapam AR overhaul with 3D Gopuram, carved pillars, pedestal with diyas, ringing temple bell, 3D marigold shower, and gesture controls. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, ssets/ar-invitation-qr.png |
 | **v1.5.0_webar_immersive_experience** | 2026-08-30 01:32 | Added initial WebAR experience, AR QR code generator, and fullscreen web fallback. | r.html, index.html, css/ar.css, css/experience.css, js/ar.js, js/experience.js, ssets/ar-invitation-qr.png |
@@ -21,11 +22,7 @@ This directory stores historical snapshot versions of the codebase for archival,
 
 ## 📌 Version Highlights
 
-### 1.7.0_unified_ar_surface_scanner (Latest)
-- **Unified 3D View:** Removed mode tabs; single seamless 3D perspective with 360° rotation, tilt, and pinch-zoom.
-- **Realistic Spatial Depth:** Pushed mandapam further back into room space (~3-4 feet away, scale: 0.78, 	ranslateZ: -140px).
-- **Welcoming Camera Permission Gate:** Elegant greeting dialog with clean action buttons: **View AR Experience** and **Continue to Website**.
-- **Golden Camera Scanner Animation:** Sweeping laser grid with viewfinder corners and smooth materialization reveal.
-
-### 1.6.0_spatial_3d_webar_mandapam
-- 3D temple Gopuram crown, carved pillars, pedestal base with diyas, ringing temple bell, and 3D falling marigold shower.
+### 1.8.0_ar_controls_touch_and_audio_fix (Latest)
+- **Dedicated Gesture Plane:** Fixed pinch-zoom, 1-finger 360° rotate, and 2-finger drag pan so iframe touch interception no longer blocks AR controls.
+- **Dedicated AR Auto Play Control:** Added ⏸ Pause / ▶ Play button in AR bottom bar with two-way cross-frame synchronization.
+- **Sound Toggle Fix:** Audio pause and resume now properly fade and toggle background music via TempleAudio.pauseMusic() and TempleAudio.startMusic().
