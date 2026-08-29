@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#120704" />
+  <title>AR Temple Invitation | Vinayaka Chaturthi 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link file="css" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/ar.css" />
+</head>
+<body>
+  <!-- Camera Feed Background -->
+  <video id="cameraFeed" class="ar-camera-feed" autoplay playsinline muted></video>
+  <div class="ar-vignette"></div>
+
+  <!-- Top Devotional AR HUD -->
+  <header class="ar-top-hud">
+    <div class="ar-badge">
+      <span class="ar-live-dot"></span>
+      <span class="ar-badge-title">Temple Immersive AR Experience</span>
+    </div>
+  </header>
+
+  <!-- 3D AR World -->
+  <main class="ar-world" id="arWorld">
+    <div class="ar-floating-tablet" id="floatingTablet">
+      <div class="ar-tablet-header">
+        <span class="ar-header-gem"></span>
+        <span class="ar-header-text">॥ OM GAM GANAPATAYE NAMAHA ॥</span>
+        <span class="ar-header-gem"></span>
+      </div>
+      <iframe
+        id="invitationFrame"
+        class="ar-invitation-frame"
+        src="index.html?mode=ar&autoplay=1&embed=1"
+        allow="autoplay"
+        title="Interactive Temple Invitation"
+      ></iframe>
+    </div>
+  </main>
+
+  <!-- Bottom Floating Action Bar -->
+  <footer class="ar-bottom-bar">
+    <a class="ar-exit-btn" id="exitToWebBtn" href="index.html">
+      <span>🌐</span>
+      <span>Open Fullscreen Website</span>
+    </a>
+    <button class="ar-tool-btn" id="soundToggleBtn" type="button" aria-label="Toggle Sound" title="Sound">🔊</button>
+    <button class="ar-tool-btn" id="recenterBtn" type="button" aria-label="Recenter AR Screen" title="Recenter">🎯</button>
+  </footer>
+
+  <!-- Camera Permission / Unsupported Prompt -->
+  <div class="ar-prompt-overlay" id="arPromptOverlay" hidden>
+    <div class="ar-prompt-card">
+      <div class="ar-prompt-icon">🪔</div>
+      <h2 class="ar-prompt-title" id="promptTitle">Augmented Reality Experience</h2>
+      <p class="ar-prompt-desc" id="promptDesc">
+        Allow camera access to view the sacred temple invitation floating right in your room!
+      </p>
+      <div class="ar-prompt-actions">
+        <button class="ar-btn-primary" id="startArBtn" type="button">✨ Allow Camera & Enter AR</button>
+        <a class="ar-btn-secondary" href="index.html">🌊 View Fullscreen Website</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/ar.js"></script>
+</body>
+</html>

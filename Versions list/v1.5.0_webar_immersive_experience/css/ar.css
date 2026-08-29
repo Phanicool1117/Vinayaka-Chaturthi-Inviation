@@ -1,0 +1,326 @@
+﻿/* ==========================================================================
+   WebAR Immersive Temple Invitation Styles
+   ========================================================================== */
+
+:root {
+  --gold: #e8c978;
+  --gold-bright: #ffd875;
+  --gold-dark: #b88628;
+  --maroon: #2a0e08;
+  --dark-bg: #0d0604;
+  --ivory: #fff8eb;
+  --font-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #080302;
+  font-family: var(--font-sans);
+  color: var(--ivory);
+}
+
+/* Background Camera Stream */
+.ar-camera-feed {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 1;
+  transform: scaleX(-1); /* mirror if front, JS resets for back */
+  background: #080302;
+}
+
+.ar-camera-feed.is-environment {
+  transform: none;
+}
+
+/* Ambient Devotional Dark Vignette */
+.ar-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 40%, rgba(13, 6, 4, 0.75) 100%);
+}
+
+/* 3D AR World Container */
+.ar-world {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+
+/* Floating 3D Temple Frame */
+.ar-floating-tablet {
+  position: relative;
+  width: min(84vw, 340px);
+  height: min(74vh, 604px);
+  border-radius: 26px;
+  background: #120704;
+  border: 2.5px solid var(--gold-bright);
+  box-shadow: 
+    0 0 35px rgba(255, 216, 117, 0.4),
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    inset 0 0 15px rgba(232, 201, 120, 0.3);
+  transform-style: preserve-3d;
+  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.12s ease-out;
+  overflow: hidden;
+  animation: floatAR 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes floatAR {
+  0% {
+    transform: translateY(0px) rotateX(0deg);
+    box-shadow: 0 0 30px rgba(255, 216, 117, 0.35), 0 20px 50px rgba(0, 0, 0, 0.85);
+  }
+  100% {
+    transform: translateY(-12px) rotateX(1deg);
+    box-shadow: 0 0 45px rgba(255, 216, 117, 0.55), 0 28px 65px rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* Ornate Temple Header Border on 3D Frame */
+.ar-tablet-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(180deg, rgba(42, 14, 8, 0.95) 0%, rgba(18, 7, 4, 0) 100%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.ar-header-gem {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px var(--gold-bright);
+}
+
+.ar-header-text {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-bright);
+  font-family: var(--font-serif);
+  text-shadow: 0 0 8px rgba(255, 216, 117, 0.6);
+}
+
+/* Embedded Invitation Iframe running Auto Play */
+.ar-invitation-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000;
+  display: block;
+}
+
+/* Top Devotional HUD Banner */
+.ar-top-hud {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.ar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.85rem;
+  background: rgba(20, 8, 5, 0.85);
+  border: 1px solid rgba(232, 201, 120, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.ar-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseDot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.ar-badge-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+}
+
+/* Bottom Action Bar */
+.ar-bottom-bar {
+  position: fixed;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0 1rem;
+}
+
+.ar-exit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ffd875 0%, #d4a338 100%);
+  color: #1a0a05;
+  border: 1px solid #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 18px rgba(255, 216, 117, 0.45);
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+
+.ar-exit-btn:hover,
+.ar-exit-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.ar-tool-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(20, 8, 5, 0.85);
+  border: 1.5px solid var(--gold);
+  color: var(--gold-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.18s, background 0.18s;
+}
+
+.ar-tool-btn:active {
+  transform: scale(0.92);
+  background: rgba(232, 201, 120, 0.25);
+}
+
+/* Permission / Unsupported Modal */
+.ar-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  background: rgba(10, 4, 3, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ar-prompt-overlay[hidden] {
+  display: none;
+}
+
+.ar-prompt-card {
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(165deg, rgba(42, 14, 8, 0.98), rgba(18, 7, 4, 0.98));
+  border: 1.5px solid var(--gold);
+  border-radius: 20px;
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(232, 201, 120, 0.3);
+}
+
+.ar-prompt-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.ar-prompt-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--gold-bright);
+  margin-bottom: 0.4rem;
+}
+
+.ar-prompt-desc {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: rgba(255, 248, 235, 0.85);
+  margin-bottom: 1.2rem;
+}
+
+.ar-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ar-btn-primary {
+  padding: 0.7rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark));
+  color: #1a0a05;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.ar-btn-secondary {
+  padding: 0.65rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(232, 201, 120, 0.35);
+  color: var(--ivory);
+  font-size: 0.78rem;
+  text-decoration: none;
+  cursor: pointer;
+}
